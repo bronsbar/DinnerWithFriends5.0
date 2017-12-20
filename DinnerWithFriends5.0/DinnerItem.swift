@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CloudKit
 
 
 struct DinnerItem {
@@ -17,4 +18,20 @@ struct DinnerItem {
     var notes : String?
     var rating : Int?
     
-}
+    func convertDataToUIimage (inputdata data: Data) -> UIImage? {
+        // nog uit te werken
+        return nil
+    }
+   
+    init (from record : CKRecord) {
+        let name = record["name"] as! String
+        self.name = name
+        self.image = nil
+        self.url = nil
+        self.notes = nil
+        self.rating = nil
+    }
+        
+        
+    
+    }

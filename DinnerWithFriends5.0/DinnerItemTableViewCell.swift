@@ -12,6 +12,7 @@ class DinnerItemTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellView: UIView!
     
+    @IBOutlet weak var name: UILabel!
     
     
     override func awakeFromNib() {

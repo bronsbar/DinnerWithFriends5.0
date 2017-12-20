@@ -7,13 +7,29 @@
 //
 
 import UIKit
+import CloudKit
 
 class DinnerItemTableViewController: UITableViewController {
     
+    var dinnerItems: [DinnerItem] = []
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "DinnerItem", predicate: predicate)
+        let operation = CKQueryOperation(query: query)
+        operation.recordFetchedBlock = { record in
+            let dinnerItem = DinnerItem(from: record)
+            self.dinnerItems.append(dinnerItem)
+        }
+        operation.queryCompletionBlock = { cursor, error in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        self.container.publicCloudDatabase.add(operation)
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -36,7 +52,8 @@ class DinnerItemTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        return dinnerItems.count
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -51,6 +68,7 @@ class DinnerItemTableViewController: UITableViewController {
         
         cell.cellView.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         cell.cellView.layer.cornerRadius = cell.cellView.frame.height / 2
+        cell.name.text = dinnerItems[indexPath.row].name
         
         return cell
     }
