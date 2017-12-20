@@ -12,6 +12,11 @@
 		C9483AC61FEA93F4003C0812 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9483AC41FEA93F4003C0812 /* Main.storyboard */; };
 		C9483AC81FEA93F4003C0812 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9483AC71FEA93F4003C0812 /* Assets.xcassets */; };
 		C9483ACB1FEA93F4003C0812 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9483AC91FEA93F4003C0812 /* LaunchScreen.storyboard */; };
+		C9483AD51FEA9400003C0812 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9483AD41FEA9400003C0812 /* CloudKit.framework */; };
+		C9483AD71FEA9CAE003C0812 /* DinnerItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483AD61FEA9CAE003C0812 /* DinnerItemTableViewController.swift */; };
+		C9483AD91FEAA229003C0812 /* DinnerItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483AD81FEAA229003C0812 /* DinnerItemTableViewCell.swift */; };
+		C9483ADB1FEAB16A003C0812 /* Dinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483ADA1FEAB16A003C0812 /* Dinner.swift */; };
+		C9483ADD1FEAB192003C0812 /* DinnerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483ADC1FEAB192003C0812 /* DinnerItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +27,12 @@
 		C9483AC71FEA93F4003C0812 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9483ACA1FEA93F4003C0812 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9483ACC1FEA93F4003C0812 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9483AD21FEA93FE003C0812 /* DinnerWithFriends5.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DinnerWithFriends5.0.entitlements; sourceTree = "<group>"; };
+		C9483AD41FEA9400003C0812 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		C9483AD61FEA9CAE003C0812 /* DinnerItemTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItemTableViewController.swift; sourceTree = "<group>"; };
+		C9483AD81FEAA229003C0812 /* DinnerItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItemTableViewCell.swift; sourceTree = "<group>"; };
+		C9483ADA1FEAB16A003C0812 /* Dinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dinner.swift; sourceTree = "<group>"; };
+		C9483ADC1FEAB192003C0812 /* DinnerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9483AD51FEA9400003C0812 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +52,7 @@
 			children = (
 				C9483ABF1FEA93F4003C0812 /* DinnerWithFriends5.0 */,
 				C9483ABE1FEA93F4003C0812 /* Products */,
+				C9483AD31FEA9400003C0812 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +67,27 @@
 		C9483ABF1FEA93F4003C0812 /* DinnerWithFriends5.0 */ = {
 			isa = PBXGroup;
 			children = (
+				C9483AD21FEA93FE003C0812 /* DinnerWithFriends5.0.entitlements */,
 				C9483AC01FEA93F4003C0812 /* AppDelegate.swift */,
+				C9483ADA1FEAB16A003C0812 /* Dinner.swift */,
+				C9483ADC1FEAB192003C0812 /* DinnerItem.swift */,
 				C9483AC21FEA93F4003C0812 /* ViewController.swift */,
+				C9483AD61FEA9CAE003C0812 /* DinnerItemTableViewController.swift */,
 				C9483AC41FEA93F4003C0812 /* Main.storyboard */,
+				C9483AD81FEAA229003C0812 /* DinnerItemTableViewCell.swift */,
 				C9483AC71FEA93F4003C0812 /* Assets.xcassets */,
 				C9483AC91FEA93F4003C0812 /* LaunchScreen.storyboard */,
 				C9483ACC1FEA93F4003C0812 /* Info.plist */,
 			);
 			path = DinnerWithFriends5.0;
+			sourceTree = "<group>";
+		};
+		C9483AD31FEA9400003C0812 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C9483AD41FEA9400003C0812 /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,6 +123,14 @@
 					C9483ABC1FEA93F4003C0812 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -136,8 +170,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9483ADB1FEAB16A003C0812 /* Dinner.swift in Sources */,
 				C9483AC31FEA93F4003C0812 /* ViewController.swift in Sources */,
+				C9483ADD1FEAB192003C0812 /* DinnerItem.swift in Sources */,
 				C9483AC11FEA93F4003C0812 /* AppDelegate.swift in Sources */,
+				C9483AD91FEAA229003C0812 /* DinnerItemTableViewCell.swift in Sources */,
+				C9483AD71FEA9CAE003C0812 /* DinnerItemTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DinnerWithFriends5.0/DinnerWithFriends5.0.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C26YUS4LJ8;
 				INFOPLIST_FILE = DinnerWithFriends5.0/Info.plist;
@@ -289,6 +328,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DinnerWithFriends5.0/DinnerWithFriends5.0.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C26YUS4LJ8;
 				INFOPLIST_FILE = DinnerWithFriends5.0/Info.plist;

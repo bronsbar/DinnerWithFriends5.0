@@ -7,6 +7,13 @@
 //
 
 import UIKit
+import CloudKit
+
+extension UIViewController {
+    var container: CKContainer {
+        return CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
+    }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        configureCloudKit()
         return true
     }
 
@@ -41,6 +49,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    private func configureCloudKit() {
+        let container = CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
+        container.privateCloudDatabase.fetchAllRecordZones { zones, error in
+            guard let zones = zones, error == nil else {
+                // error handling
+                return
+            }
+            print ("I have these zones : \(zones)")
+        }
+    }
 
 }
 
