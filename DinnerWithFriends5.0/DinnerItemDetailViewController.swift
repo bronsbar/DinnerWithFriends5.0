@@ -38,20 +38,7 @@ class DinnerItemDetailViewController: UIViewController {
         
         // if a dinnerItem has been sent by the list, set the fields
         if let receivedDinnerItem = dinnerItemDetail {
-            if let imageAvailable = receivedDinnerItem.image {
-                image.image = imageAvailable
-            }
-            nameLabel.text = receivedDinnerItem.name
-            if let urlAvailable = receivedDinnerItem.url {
-                urlLabel.text = String(describing: urlAvailable)
-            }
-            if let ratingAvailable = receivedDinnerItem.rating {
-                ratingLabel.text = String(ratingAvailable)
-            }
-            if let notesAvailable = receivedDinnerItem.notes {
-                notesLabel.text = notesAvailable
-            }
-            
+            updateFields(with: receivedDinnerItem)
         }
         
 
@@ -73,5 +60,25 @@ class DinnerItemDetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
 
+extension DinnerItemDetailViewController {
+    // MARK: HelperFunctions
+    
+    private func updateFields(with dinnerItem : DinnerItem) {
+        
+        if let imageAvailable = dinnerItem.image {
+            image.image = imageAvailable
+        }
+        nameLabel.text = dinnerItem.name
+        if let urlAvailable = dinnerItem.url {
+            urlLabel.text = String(describing: urlAvailable)
+        }
+        if let ratingAvailable = dinnerItem.rating {
+            ratingLabel.text = String(ratingAvailable)
+        }
+        if let notesAvailable = dinnerItem.notes {
+            notesLabel.text = notesAvailable
+        }
+    }
 }
