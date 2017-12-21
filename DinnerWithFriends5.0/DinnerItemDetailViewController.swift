@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class DinnerItemDetailViewController: UIViewController {
     
@@ -32,16 +33,28 @@ class DinnerItemDetailViewController: UIViewController {
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var ratingLabel: UITextField!
     @IBOutlet weak var notesLabel: UITextView!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBAction func urlLabelTapped(_ sender: UITextField) {
+        // select een url via SafariController
+        selectUrl()
+    }
+    @IBAction func textEditingChanged(_ sender: UITextField) {
+        // Save button is only active when the name field is filled out
+        updateSaveButtonStatus()
+    }
+    @IBAction func picturedTapped(_ sender: UITapGestureRecognizer) {
+        print("picture tapped")
+    }
     
+    // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateSaveButtonStatus()
         
         // if a dinnerItem has been sent by the list, set the fields
         if let receivedDinnerItem = dinnerItemDetail {
             updateFields(with: receivedDinnerItem)
         }
-        
-
         // Do any additional setup after loading the view.
     }
 
@@ -62,7 +75,7 @@ class DinnerItemDetailViewController: UIViewController {
     */
 }
 
-extension DinnerItemDetailViewController {
+extension DinnerItemDetailViewController :SFSafariViewControllerDelegate{
     // MARK: HelperFunctions
     
     private func updateFields(with dinnerItem : DinnerItem) {
@@ -79,6 +92,31 @@ extension DinnerItemDetailViewController {
         }
         if let notesAvailable = dinnerItem.notes {
             notesLabel.text = notesAvailable
+        }
+    }
+    private func updateSaveButtonStatus()-> Void {
+    let nameText = nameLabel.text ?? ""
+        saveButton.isEnabled = !((nameText == "Name")||(nameText.isEmpty))
+    }
+    
+    func safariViewController(_ controller: SFSafariViewController, activityItemsFor URL: URL, title: String?) -> [UIActivity] {
+        urlLabel.text = URL.absoluteString
+        dinnerItemDetail?.url = URL
+        let a :[UIActivity] = []
+        return a
+    }
+    private func selectUrl () {
+        if let url = dinnerItemDetail?.url {
+            let safariController = SFSafariViewController(url: url)
+            safariController.delegate = self
+            present(safariController, animated: true, completion: nil)
+        } else {
+            let defaultUrlString = "https:www.google.com"
+            if let defaultUrl = URL(string:defaultUrlString){
+                let safariController = SFSafariViewController(url: defaultUrl)
+                safariController.delegate = self
+                present(safariController, animated: true, completion: nil)
+            }
         }
     }
 }

@@ -120,12 +120,18 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textEditingChanged:" destination="hrs-GA-q7z" eventType="editingChanged" id="AdW-f9-YrL"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Url" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lNy-0P-hXr">
                                 <rect key="frame" x="19" y="416" width="338" height="30"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="urlLabelTapped:" destination="hrs-GA-q7z" eventType="touchDown" id="An6-g7-7gD"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Rating" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QsP-Fd-HxT">
                                 <rect key="frame" x="19" y="617" width="338" height="30"/>
@@ -138,9 +144,11 @@
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Irf-mS-TxY">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                        <gestureRecognizers/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Irf-mS-TxY" secondAttribute="trailing" id="4wl-93-0N1"/>
                                     <constraint firstItem="Irf-mS-TxY" firstAttribute="top" secondItem="EzV-ta-OSp" secondAttribute="top" id="7yw-TD-M2e"/>
@@ -148,6 +156,9 @@
                                     <constraint firstAttribute="width" secondItem="EzV-ta-OSp" secondAttribute="height" multiplier="1:1" id="ltY-mN-43B"/>
                                     <constraint firstItem="Irf-mS-TxY" firstAttribute="leading" secondItem="EzV-ta-OSp" secondAttribute="leading" id="yVB-k5-G5q"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="per-2W-N0V" appends="YES" id="eFG-vA-Q5J"/>
+                                </connections>
                             </view>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="06d-Uw-RGx">
                                 <rect key="frame" x="0.0" y="18" width="375" height="44"/>
@@ -218,10 +229,16 @@
                         <outlet property="notesContainer" destination="rpv-2G-Ipb" id="ClE-vM-YOU"/>
                         <outlet property="notesLabel" destination="Yqf-2z-Wzz" id="zT8-oe-aJc"/>
                         <outlet property="ratingLabel" destination="QsP-Fd-HxT" id="917-Cr-Mmb"/>
+                        <outlet property="saveButton" destination="XRg-jw-ryZ" id="AzQ-dh-GQE"/>
                         <outlet property="urlLabel" destination="lNy-0P-hXr" id="fce-4n-qyi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ac1-0A-9xJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="per-2W-N0V">
+                    <connections>
+                        <action selector="picturedTapped:" destination="hrs-GA-q7z" id="OMV-bX-BaM"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1628" y="66"/>
         </scene>
