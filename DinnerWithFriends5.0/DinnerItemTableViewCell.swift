@@ -14,6 +14,19 @@ class DinnerItemTableViewCell: UITableViewCell {
     
     @IBOutlet weak var name: UILabel!
     
+    @IBOutlet weak var imageContainerView: UIView! {
+        didSet {
+            imageContainerView.clipsToBounds = true
+            imageContainerView.layer.cornerRadius = imageContainerView.bounds.height / 2
+        }
+    }
+
+    
+    @IBOutlet weak var imageSpinner: UIActivityIndicatorView!
+    
+    
+    @IBOutlet weak var dinnerItemImage: UIImageView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

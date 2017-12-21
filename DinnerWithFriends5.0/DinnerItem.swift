@@ -25,13 +25,25 @@ struct DinnerItem {
    
     init (from record : CKRecord) {
         let name = record["name"] as! String
+        let myImage = record.assetToUIImage()
+        self.image = myImage
         self.name = name
-        self.image = nil
         self.url = nil
         self.notes = nil
         self.rating = nil
     }
-        
-        
     
+}
+
+// extension on CKRecord to convert a property of type CKAsset into a UIImage
+
+extension CKRecord {
+    func assetToUIImage () -> UIImage? {
+        if let imageInRecord = self["image"] as? CKAsset, let newImage =  UIImage(contentsOfFile: imageInRecord.fileURL.path){
+            return newImage
+        } else {
+            return nil
+        }
+        
     }
+}

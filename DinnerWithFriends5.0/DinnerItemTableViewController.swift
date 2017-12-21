@@ -65,10 +65,18 @@ class DinnerItemTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "dinnerItemCell", for: indexPath) as! DinnerItemTableViewCell
 
         // Configure the cell...
+        let index = indexPath.row
         
-        cell.cellView.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        cell.cellView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         cell.cellView.layer.cornerRadius = cell.cellView.frame.height / 2
-        cell.name.text = dinnerItems[indexPath.row].name
+        cell.name.text = dinnerItems[index].name
+        //update image
+        if let imageAvailable = dinnerItems[index].image {
+            cell.dinnerItemImage.image = imageAvailable
+        } else {
+            cell.imageContainerView.isHidden = true
+            cell.imageSpinner.isHidden = true
+        }
         
         return cell
     }
@@ -109,14 +117,22 @@ class DinnerItemTableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let destinationVC = segue.destination as? UINavigationController
+        let dinnerItemDetailVC = destinationVC?.topViewController as? DinnerItemDetailViewController
+        if segue.identifier == "addItemDetailSegue" {
+            // setup if new item added
+            dinnerItemDetailVC?.newItem = true
+        }
+        if segue.identifier == "editDinnerItemSegue" {
+            if let selectedRow = tableView.indexPathForSelectedRow?.row {
+                dinnerItemDetailVC?.dinnerItemDetail = dinnerItems[selectedRow]
+            } else {
+                dinnerItemDetailVC?.dinnerItemDetail = nil
+            }
+            
+        }
     }
-    */
-
 }
