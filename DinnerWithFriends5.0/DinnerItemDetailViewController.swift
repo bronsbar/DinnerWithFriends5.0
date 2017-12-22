@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import CoreGraphics
 
 class DinnerItemDetailViewController: UIViewController {
     
@@ -29,6 +30,11 @@ class DinnerItemDetailViewController: UIViewController {
         }
     }
     @IBOutlet weak var image: UIImageView!
+    
+    
+    
+    
+    
     @IBOutlet weak var urlLabel: UITextField!
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var ratingLabel: UITextField!
