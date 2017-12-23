@@ -112,20 +112,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4rT-my-RyV">
-                                <rect key="frame" x="37.5" y="84" width="300" height="300"/>
+                                <rect key="frame" x="52" y="84" width="271" height="271.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ImG-N1-lem">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="271" height="271.5"/>
                                         <gestureRecognizers/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="jSE-8P-oWd" appends="YES" id="91B-vN-BH6"/>
                                         </connections>
                                     </imageView>
                                     <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iby-pk-aOG">
-                                        <rect key="frame" x="0.0" y="230" width="300" height="70"/>
+                                        <rect key="frame" x="0.0" y="201.5" width="271" height="70"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Name:" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zG5-d9-WJ3">
-                                                <rect key="frame" x="8" y="20.5" width="272" height="30"/>
+                                                <rect key="frame" x="8" y="20.5" width="243" height="30"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -157,10 +157,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0a6-wt-fUy">
-                                <rect key="frame" x="37.5" y="394" width="300" height="253"/>
+                                <rect key="frame" x="52" y="365.5" width="271" height="281.5"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Url:" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s7a-JG-HAJ">
-                                        <rect key="frame" x="4" y="155" width="292" height="21"/>
+                                        <rect key="frame" x="4" y="169" width="263" height="21"/>
                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -170,14 +170,14 @@
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Rating:" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TEs-S9-5v7">
-                                        <rect key="frame" x="4" y="184" width="292" height="21"/>
+                                        <rect key="frame" x="4" y="198" width="263" height="21"/>
                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Enter some notes..." adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RxY-B7-CT4">
-                                        <rect key="frame" x="4" y="20.5" width="292" height="126.5"/>
+                                        <rect key="frame" x="4" y="20.5" width="263" height="140.5"/>
                                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -209,7 +209,7 @@
                             <constraint firstItem="0a6-wt-fUy" firstAttribute="width" secondItem="ImG-N1-lem" secondAttribute="width" id="awn-dp-5Hp"/>
                             <constraint firstItem="4rT-my-RyV" firstAttribute="top" secondItem="emh-bX-eay" secondAttribute="top" constant="20" id="iya-iz-0pR"/>
                             <constraint firstItem="4rT-my-RyV" firstAttribute="centerX" secondItem="emh-bX-eay" secondAttribute="centerX" id="pSP-Om-8Eh"/>
-                            <constraint firstItem="4rT-my-RyV" firstAttribute="height" secondItem="Nzo-WG-VvG" secondAttribute="height" multiplier="0.45" id="z47-Ju-wLk"/>
+                            <constraint firstItem="4rT-my-RyV" firstAttribute="height" secondItem="emh-bX-eay" secondAttribute="height" multiplier="0.45" id="z47-Ju-wLk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="emh-bX-eay"/>
                     </view>
