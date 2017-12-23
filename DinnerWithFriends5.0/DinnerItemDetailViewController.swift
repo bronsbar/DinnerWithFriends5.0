@@ -27,6 +27,15 @@ class DinnerItemDetailViewController: UIViewController {
         didSet {
             imageContainer.clipsToBounds = true
             imageContainer.layer.cornerRadius = imageContainer.bounds.height * 0.1
+            let shadowPath = UIBezierPath(rect: imageContainer.bounds)
+            imageContainer.layer.masksToBounds = false
+            imageContainer.layer.shadowOpacity = 0.5
+            
+            imageContainer.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            imageContainer.layer.shadowRadius = 5
+            imageContainer.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+            imageContainer.layer.shadowPath = shadowPath.cgPath
+            
         }
     }
     @IBOutlet weak var image: UIImageView!
@@ -47,7 +56,11 @@ class DinnerItemDetailViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var notesLabel: UITextView!
+    @IBOutlet weak var notesLabel: UITextView! {
+        didSet {
+            notesLabel.layer.cornerRadius = notesLabel.bounds.height * 0.10
+        }
+    }
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBAction func urlLabelTapped(_ sender: UITextField) {
         // select een url via SafariController
