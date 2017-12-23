@@ -25,8 +25,7 @@ class DinnerItemDetailViewController: UIViewController {
     }
     @IBOutlet weak var imageContainer: UIView! {
         didSet {
-            imageContainer.clipsToBounds = true
-            imageContainer.layer.cornerRadius = imageContainer.bounds.height * 0.1
+            
             let shadowPath = UIBezierPath(rect: imageContainer.bounds)
             imageContainer.layer.masksToBounds = false
             imageContainer.layer.shadowOpacity = 0.5
@@ -46,13 +45,15 @@ class DinnerItemDetailViewController: UIViewController {
     
     @IBOutlet weak var urlLabel: UITextField! {
         didSet {
-            urlLabel.layer.cornerRadius = urlLabel.bounds.height / 2
+            urlLabel.layer.cornerRadius = urlLabel.bounds.height * 0.1
+            
         }
     }
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var ratingLabel: UITextField! {
         didSet {
-            ratingLabel.layer.cornerRadius = ratingLabel.bounds.height / 2
+            ratingLabel.layer.cornerRadius = ratingLabel.bounds.height * 0.1
+            
         }
     }
     
