@@ -35,9 +35,18 @@ class DinnerItemDetailViewController: UIViewController {
     
     
     
-    @IBOutlet weak var urlLabel: UITextField!
+    @IBOutlet weak var urlLabel: UITextField! {
+        didSet {
+            urlLabel.layer.cornerRadius = urlLabel.bounds.height / 2
+        }
+    }
     @IBOutlet weak var nameLabel: UITextField!
-    @IBOutlet weak var ratingLabel: UITextField!
+    @IBOutlet weak var ratingLabel: UITextField! {
+        didSet {
+            ratingLabel.layer.cornerRadius = ratingLabel.bounds.height / 2
+        }
+    }
+    
     @IBOutlet weak var notesLabel: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBAction func urlLabelTapped(_ sender: UITextField) {
