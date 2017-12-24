@@ -67,9 +67,10 @@ class DinnerItemDetailViewController: UIViewController {
         // Save button is only active when the name field is filled out
         updateSaveButtonStatus()
     }
-//    @IBAction func picturedTapped(_ sender: UITapGestureRecognizer) {
-//        print("picture tapped")
-//    }
+    @IBAction func picturedTapped(_ sender: UITapGestureRecognizer) {
+        print("picture tapped")
+        updateImage()
+    }
   
     // MARK: Pan the Image
     // helpermethod transform calculates the transform
@@ -124,7 +125,7 @@ class DinnerItemDetailViewController: UIViewController {
     */
 }
 
-extension DinnerItemDetailViewController :SFSafariViewControllerDelegate{
+extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: HelperFunctions
     
     private func updateFields(with dinnerItem : DinnerItem) {
@@ -166,6 +167,35 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate{
                 safariController.delegate = self
                 present(safariController, animated: true, completion: nil)
             }
+        }
+    }
+    private func updateImage() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        let alertController = UIAlertController(title: "Choose Image Source", message: nil, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let cameraAction = UIAlertAction(title: "Camera", style: .default, handler: { (action) in
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)
+            })
+            alertController.addAction(cameraAction)
+        }
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let photoLibraryAction = UIAlertAction(title: "Photolibrary", style: .default, handler: { (action) in
+                imagePicker.sourceType = .photoLibrary
+                self.present(imagePicker, animated: true, completion: nil)
+            })
+            alertController.addAction(photoLibraryAction)
+        }
+        present(alertController, animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            image.image = selectedImage
+            dismiss(animated: true, completion: nil)
         }
     }
 }
