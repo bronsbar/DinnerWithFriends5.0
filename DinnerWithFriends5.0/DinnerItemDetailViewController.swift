@@ -34,26 +34,21 @@ class DinnerItemDetailViewController: UIViewController {
             imageContainer.layer.shadowRadius = 5
             imageContainer.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
             imageContainer.layer.shadowPath = shadowPath.cgPath
+    
             
         }
     }
     @IBOutlet weak var image: UIImageView!
     
-    
-    
-    
-    
     @IBOutlet weak var urlLabel: UITextField! {
         didSet {
             urlLabel.layer.cornerRadius = urlLabel.bounds.height * 0.1
-            
         }
     }
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var ratingLabel: UITextField! {
         didSet {
             ratingLabel.layer.cornerRadius = ratingLabel.bounds.height * 0.1
-            
         }
     }
     
@@ -63,6 +58,7 @@ class DinnerItemDetailViewController: UIViewController {
         }
     }
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    
     @IBAction func urlLabelTapped(_ sender: UITextField) {
         // select een url via SafariController
         selectUrl()
@@ -71,9 +67,33 @@ class DinnerItemDetailViewController: UIViewController {
         // Save button is only active when the name field is filled out
         updateSaveButtonStatus()
     }
-    @IBAction func picturedTapped(_ sender: UITapGestureRecognizer) {
-        print("picture tapped")
+//    @IBAction func picturedTapped(_ sender: UITapGestureRecognizer) {
+//        print("picture tapped")
+//    }
+  
+    // MARK: Pan the Image
+    // helpermethod transform calculates the transform
+    private func transform(for translation: CGPoint) -> CGAffineTransform {
+        let moveBy = CGAffineTransform(translationX: translation.x, y: translation.y)
+        let rotation = -sin(translation.x / (imageContainer.frame.width * 4.0))
+        return moveBy.rotated(by: rotation)
     }
+    
+    @IBAction func panImage(_ sender: UIPanGestureRecognizer) {
+        switch sender.state {
+        case .changed:
+            let translation = sender.translation(in: imageContainer.superview)
+            imageContainer.transform = transform(for: translation)
+        case .ended:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1.0, options: [], animations : {self.imageContainer.transform = .identity}, completion: nil)
+            
+        default:
+            break
+        }
+        
+    }
+    
+    
     
     // MARK: ViewDidLoad
     override func viewDidLoad() {

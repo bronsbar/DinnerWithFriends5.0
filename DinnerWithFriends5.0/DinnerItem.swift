@@ -28,9 +28,11 @@ struct DinnerItem {
         let myImage = record.assetToUIImage()
         self.image = myImage
         self.name = name
-        self.url = nil
-        self.notes = nil
-        self.rating = nil
+        if let urlString = record["url"] as? String, let url = URL(string: urlString) {
+            self.url = url
+        }
+        self.notes = record["notes"] as? String
+        self.rating = record["rating"] as? Int
     }
     
 }

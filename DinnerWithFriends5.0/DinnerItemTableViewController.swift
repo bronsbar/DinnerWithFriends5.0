@@ -135,4 +135,8 @@ class DinnerItemTableViewController: UITableViewController {
             
         }
     }
+    
+    @IBAction func unwindFromDinnerItemDetail(segue:UIStoryboardSegue) {
+        tableView.reloadData()
+    }
 }

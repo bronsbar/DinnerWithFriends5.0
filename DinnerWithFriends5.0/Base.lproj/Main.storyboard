@@ -120,9 +120,6 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ImG-N1-lem">
                                         <rect key="frame" x="0.0" y="0.0" width="271" height="271.5"/>
                                         <gestureRecognizers/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="jSE-8P-oWd" appends="YES" id="91B-vN-BH6"/>
-                                        </connections>
                                     </imageView>
                                     <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iby-pk-aOG">
                                         <rect key="frame" x="0.0" y="201.5" width="271" height="70"/>
@@ -148,6 +145,7 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="ImG-N1-lem" firstAttribute="width" secondItem="4rT-my-RyV" secondAttribute="width" id="0WD-27-tqm"/>
                                     <constraint firstAttribute="trailing" secondItem="Iby-pk-aOG" secondAttribute="trailing" id="7q3-gp-Lkh"/>
@@ -158,6 +156,9 @@
                                     <constraint firstAttribute="bottom" secondItem="Iby-pk-aOG" secondAttribute="bottom" id="sMC-Is-aid"/>
                                     <constraint firstItem="ImG-N1-lem" firstAttribute="centerY" secondItem="4rT-my-RyV" secondAttribute="centerY" id="wcg-8U-t3w"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Yp7-r4-ouo" appends="YES" id="bUz-Eo-h5H"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0a6-wt-fUy">
                                 <rect key="frame" x="4" y="365.5" width="367" height="281.5"/>
@@ -173,6 +174,7 @@
                                                 <textInputTraits key="textInputTraits"/>
                                                 <connections>
                                                     <action selector="urlLabelTapped:" destination="41i-NK-yiy" eventType="editingDidEnd" id="0FA-CT-EKr"/>
+                                                    <action selector="urlLabelTapped:" destination="41i-NK-yiy" eventType="touchDown" id="bS1-aD-G7Y"/>
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Rating:" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TEs-S9-5v7">
@@ -277,6 +279,9 @@
                     <navigationItem key="navigationItem" id="zuJ-vo-3OO">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5Zx-Zy-zWR">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <segue destination="liT-7Y-I2p" kind="unwind" unwindAction="unwindFromDinnerItemDetailWithSegue:" id="uFt-VE-lGb"/>
+                            </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="save" id="62z-Ji-Hxm">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -294,11 +299,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PzO-KZ-iJt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="jSE-8P-oWd">
+                <exit id="liT-7Y-I2p" userLabel="Exit" sceneMemberID="exit"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="Yp7-r4-ouo">
                     <connections>
-                        <action selector="picturedTapped:" destination="41i-NK-yiy" id="kFL-QQ-v5w"/>
+                        <action selector="panImage:" destination="41i-NK-yiy" id="ZJg-zr-yFL"/>
                     </connections>
-                </tapGestureRecognizer>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1549.5999999999999" y="63.418290854572717"/>
         </scene>
