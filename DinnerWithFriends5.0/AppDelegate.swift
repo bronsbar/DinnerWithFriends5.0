@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import CoreData
 
 extension UIViewController {
     var container: CKContainer {
@@ -19,11 +20,16 @@ extension UIViewController {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    lazy var coreDataStack = CoreDataStack(modelName: "Dinner With Friends")
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+      
         configureCloudKit()
+        
+        // propagate the managedContext
+        guard let navController = window?.rootViewController?.childViewControllers[0] as? UINavigationController, let viewController = navController.topViewController as? DinnerItemTableViewController else {return true}
+        viewController.managedContext = coreDataStack.managedContext
         return true
     }
 
@@ -35,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        coreDataStack.saveContext()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -47,12 +54,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        coreDataStack.saveContext()
     }
 
     private func configureCloudKit() {
         let container = CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
         container.privateCloudDatabase.fetchAllRecordZones { zones, error in
             guard let zones = zones, error == nil else {
+            
                 // error handling
                 return
             }

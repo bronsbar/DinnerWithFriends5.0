@@ -8,8 +8,12 @@
 
 import UIKit
 import CloudKit
+import CoreData
 
 class DinnerItemTableViewController: UITableViewController {
+    
+    var managedContext : NSManagedObjectContext!
+    
     
     var dinnerItems: [DinnerItem] = []
     

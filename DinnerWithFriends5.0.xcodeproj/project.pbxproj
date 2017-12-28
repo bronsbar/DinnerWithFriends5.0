@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C924385B1FEBFFBD00AA4644 /* DinnerItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C924385A1FEBFFBD00AA4644 /* DinnerItemDetailViewController.swift */; };
+		C945E4071FF4D038003294F3 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C945E4061FF4D038003294F3 /* CoreDataStack.swift */; };
+		C945E40A1FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C945E4081FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld */; };
 		C9483AC11FEA93F4003C0812 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483AC01FEA93F4003C0812 /* AppDelegate.swift */; };
 		C9483AC31FEA93F4003C0812 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483AC21FEA93F4003C0812 /* ViewController.swift */; };
 		C9483AC61FEA93F4003C0812 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9483AC41FEA93F4003C0812 /* Main.storyboard */; };
@@ -18,10 +20,16 @@
 		C9483AD91FEAA229003C0812 /* DinnerItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483AD81FEAA229003C0812 /* DinnerItemTableViewCell.swift */; };
 		C9483ADB1FEAB16A003C0812 /* Dinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483ADA1FEAB16A003C0812 /* Dinner.swift */; };
 		C9483ADD1FEAB192003C0812 /* DinnerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9483ADC1FEAB192003C0812 /* DinnerItem.swift */; };
+		C96FA9431FF543EB00AB520A /* Dinners+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96FA93F1FF543EB00AB520A /* Dinners+CoreDataClass.swift */; };
+		C96FA9441FF543EB00AB520A /* Dinners+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96FA9401FF543EB00AB520A /* Dinners+CoreDataProperties.swift */; };
+		C96FA9451FF543EB00AB520A /* DinnerItems+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96FA9411FF543EB00AB520A /* DinnerItems+CoreDataClass.swift */; };
+		C96FA9461FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96FA9421FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C924385A1FEBFFBD00AA4644 /* DinnerItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItemDetailViewController.swift; sourceTree = "<group>"; };
+		C945E4061FF4D038003294F3 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		C945E4091FF4D28C003294F3 /* Dinner With Friends.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dinner With Friends.xcdatamodel"; sourceTree = "<group>"; };
 		C9483ABD1FEA93F4003C0812 /* DinnerWithFriends5.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DinnerWithFriends5.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9483AC01FEA93F4003C0812 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9483AC21FEA93F4003C0812 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +43,10 @@
 		C9483AD81FEAA229003C0812 /* DinnerItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItemTableViewCell.swift; sourceTree = "<group>"; };
 		C9483ADA1FEAB16A003C0812 /* Dinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dinner.swift; sourceTree = "<group>"; };
 		C9483ADC1FEAB192003C0812 /* DinnerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItem.swift; sourceTree = "<group>"; };
+		C96FA93F1FF543EB00AB520A /* Dinners+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dinners+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C96FA9401FF543EB00AB520A /* Dinners+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dinners+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C96FA9411FF543EB00AB520A /* DinnerItems+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DinnerItems+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C96FA9421FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DinnerItems+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +64,10 @@
 		C9483AB41FEA93F4003C0812 = {
 			isa = PBXGroup;
 			children = (
+				C96FA93F1FF543EB00AB520A /* Dinners+CoreDataClass.swift */,
+				C96FA9401FF543EB00AB520A /* Dinners+CoreDataProperties.swift */,
+				C96FA9411FF543EB00AB520A /* DinnerItems+CoreDataClass.swift */,
+				C96FA9421FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift */,
 				C9483ABF1FEA93F4003C0812 /* DinnerWithFriends5.0 */,
 				C9483ABE1FEA93F4003C0812 /* Products */,
 				C9483AD31FEA9400003C0812 /* Frameworks */,
@@ -69,18 +85,20 @@
 		C9483ABF1FEA93F4003C0812 /* DinnerWithFriends5.0 */ = {
 			isa = PBXGroup;
 			children = (
-				C924385A1FEBFFBD00AA4644 /* DinnerItemDetailViewController.swift */,
 				C9483AD21FEA93FE003C0812 /* DinnerWithFriends5.0.entitlements */,
 				C9483AC01FEA93F4003C0812 /* AppDelegate.swift */,
+				C945E4081FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld */,
 				C9483ADA1FEAB16A003C0812 /* Dinner.swift */,
 				C9483ADC1FEAB192003C0812 /* DinnerItem.swift */,
 				C9483AC21FEA93F4003C0812 /* ViewController.swift */,
+				C924385A1FEBFFBD00AA4644 /* DinnerItemDetailViewController.swift */,
 				C9483AD61FEA9CAE003C0812 /* DinnerItemTableViewController.swift */,
 				C9483AC41FEA93F4003C0812 /* Main.storyboard */,
 				C9483AD81FEAA229003C0812 /* DinnerItemTableViewCell.swift */,
 				C9483AC71FEA93F4003C0812 /* Assets.xcassets */,
 				C9483AC91FEA93F4003C0812 /* LaunchScreen.storyboard */,
 				C9483ACC1FEA93F4003C0812 /* Info.plist */,
+				C945E4061FF4D038003294F3 /* CoreDataStack.swift */,
 			);
 			path = DinnerWithFriends5.0;
 			sourceTree = "<group>";
@@ -173,6 +191,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96FA9461FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift in Sources */,
+				C96FA9441FF543EB00AB520A /* Dinners+CoreDataProperties.swift in Sources */,
 				C9483ADB1FEAB16A003C0812 /* Dinner.swift in Sources */,
 				C9483AC31FEA93F4003C0812 /* ViewController.swift in Sources */,
 				C9483ADD1FEAB192003C0812 /* DinnerItem.swift in Sources */,
@@ -180,6 +200,10 @@
 				C9483AD91FEAA229003C0812 /* DinnerItemTableViewCell.swift in Sources */,
 				C9483AD71FEA9CAE003C0812 /* DinnerItemTableViewController.swift in Sources */,
 				C924385B1FEBFFBD00AA4644 /* DinnerItemDetailViewController.swift in Sources */,
+				C96FA9451FF543EB00AB520A /* DinnerItems+CoreDataClass.swift in Sources */,
+				C945E4071FF4D038003294F3 /* CoreDataStack.swift in Sources */,
+				C945E40A1FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld in Sources */,
+				C96FA9431FF543EB00AB520A /* Dinners+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +390,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C945E4081FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C945E4091FF4D28C003294F3 /* Dinner With Friends.xcdatamodel */,
+			);
+			currentVersion = C945E4091FF4D28C003294F3 /* Dinner With Friends.xcdatamodel */;
+			path = "Dinner With Friends.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C9483AB51FEA93F4003C0812 /* Project object */;
 }
