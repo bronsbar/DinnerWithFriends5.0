@@ -9,11 +9,14 @@
 import UIKit
 import SafariServices
 import CoreGraphics
+import CoreData
 
 class DinnerItemDetailViewController: UIViewController {
     
     var newItem : Bool = false // is set true by when + is selected in the dinnerItemList
     var dinnerItemDetail : DinnerItem? // will be set when a dinnerItem is passed from the dinnerItem list
+    
+    var managedContext : NSManagedObjectContext!
 
     @IBOutlet weak var notesContainer: UIView! {
         didSet {
@@ -197,5 +200,15 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
             image.image = selectedImage
             dismiss(animated: true, completion: nil)
         }
+    }
+    private func addDinnerItem() {
+        let dinnerItem = DinnerItems(context: managedContext)
+        dinnerItem.added = NSDate()
+        dinnerItem.lastUpdate = NSDate()
+        let name = nameLabel.text ?? nil
+        dinnerItem.name = name
+        let notes = notesLabel.text ?? nil
+        dinnerItem.notes = notes
+        // add additional elements
     }
 }

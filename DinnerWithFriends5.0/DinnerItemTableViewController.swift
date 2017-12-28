@@ -126,7 +126,11 @@ class DinnerItemTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as? UINavigationController
         let dinnerItemDetailVC = destinationVC?.topViewController as? DinnerItemDetailViewController
-        if segue.identifier == "addItemDetailSegue" {
+        
+        // propagate the managedContext
+        dinnerItemDetailVC?.managedContext = managedContext
+        
+        if segue.identifier == "addDinnerItemSegue" {
             // setup if new item added
             dinnerItemDetailVC?.newItem = true
         }

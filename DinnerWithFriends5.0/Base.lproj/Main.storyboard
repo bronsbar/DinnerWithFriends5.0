@@ -99,6 +99,9 @@
                     <navigationItem key="navigationItem" title="Dinner with Friends" id="as2-zi-SOE">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="8rd-8X-RE7">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <segue destination="tp5-o1-E3v" kind="show" identifier="addDinnerItemSegue" id="Kpa-fG-EBw"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
@@ -358,4 +361,7 @@
             <point key="canvasLocation" x="839" y="64"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Kpa-fG-EBw"/>
+    </inferredMetricsTieBreakers>
 </document>
