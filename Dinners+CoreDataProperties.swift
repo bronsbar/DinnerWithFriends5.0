@@ -2,7 +2,7 @@
 //  Dinners+CoreDataProperties.swift
 //  DinnerWithFriends5.0
 //
-//  Created by Bart Bronselaer on 28/12/17.
+//  Created by Bart Bronselaer on 29/12/17.
 //  Copyright © 2017 Bart Bronselaer. All rights reserved.
 //
 //

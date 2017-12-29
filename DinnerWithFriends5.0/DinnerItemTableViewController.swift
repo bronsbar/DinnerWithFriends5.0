@@ -16,23 +16,14 @@ class DinnerItemTableViewController: UITableViewController {
     
     
     var dinnerItems: [DinnerItem] = []
+    var coreDinnerItems: [DinnerItems] = []
+    var itemSelected = ""
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "DinnerItem", predicate: predicate)
-        let operation = CKQueryOperation(query: query)
-        operation.recordFetchedBlock = { record in
-            let dinnerItem = DinnerItem(from: record)
-            self.dinnerItems.append(dinnerItem)
-        }
-        operation.queryCompletionBlock = { cursor, error in
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-        self.container.publicCloudDatabase.add(operation)
+        // call extension in DinnerItems+CoreDataProperties to fetch the DinnerItems stored in CloudKit
+       fetchDinnerItemsFromCloudKit()
         
         
         // Uncomment the following line to preserve selection between presentations
@@ -148,3 +139,5 @@ class DinnerItemTableViewController: UITableViewController {
         tableView.reloadData()
     }
 }
+// Extensions and helper functions
+

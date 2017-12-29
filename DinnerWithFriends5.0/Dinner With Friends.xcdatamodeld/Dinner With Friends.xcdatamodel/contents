@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="DinnerItems" representedClassName="DinnerItems" syncable="YES">
         <attribute name="added" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -27,7 +28,7 @@
         <relationship name="dinneritems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DinnerItems" inverseName="dinners" inverseEntity="DinnerItems" syncable="YES"/>
     </entity>
     <elements>
+        <element name="DinnerItems" positionX="-540" positionY="63" width="128" height="225"/>
         <element name="Dinners" positionX="-54" positionY="63" width="128" height="208"/>
-        <element name="DinnerItems" positionX="-540" positionY="63" width="128" height="208"/>
     </elements>
 </model>
