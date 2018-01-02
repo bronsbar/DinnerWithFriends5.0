@@ -12,7 +12,18 @@ import CoreData
 
 class DinnerItemTableViewController: UITableViewController {
     
-    var managedContext : NSManagedObjectContext!
+    var coreDataStack  : CoreDataStack!
+    
+    // Create a fetchedResultsController to get the dinnerItems from Core Data
+    lazy var fetchedResultsController: NSFetchedResultsController<DinnerItems> = {
+        let fetchRequest: NSFetchRequest<DinnerItems> = DinnerItems.fetchRequest()
+        let sort = NSSortDescriptor(key: #keyPath(DinnerItems.name), ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchedResultsController
+    }()
+    
+    
     
     
     var dinnerItems: [DinnerItem] = []
@@ -22,8 +33,18 @@ class DinnerItemTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        do {
+            try fetchedResultsController.performFetch()
+            
+        } catch let error as NSError {
+            print ("Fetching error: \(error), \(error.userInfo)")
+            }
+            
+        }
+    
         // call extension in DinnerItems+CoreDataProperties to fetch the DinnerItems stored in CloudKit
-       fetchDinnerItemsFromCloudKit()
+//       fetchDinnerItemsFromCloudKit()
         
         
         // Uncomment the following line to preserve selection between presentations
@@ -31,7 +52,6 @@ class DinnerItemTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -42,36 +62,31 @@ class DinnerItemTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        guard let sections = fetchedResultsController.sections else {
+            return 0
+        }
+        return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return dinnerItems.count
-        
+        guard let sectionInfo = fetchedResultsController.sections?[section] else {
+            return 0
+        }
+        return sectionInfo.numberOfObjects
+    
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-
+    
+   
    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "dinnerItemCell", for: indexPath) as! DinnerItemTableViewCell
-
-        // Configure the cell...
-        let index = indexPath.row
         
-        cell.cellView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        cell.cellView.layer.cornerRadius = cell.cellView.frame.height / 2
-        cell.name.text = dinnerItems[index].name
-        //update image
-        if let imageAvailable = dinnerItems[index].image {
-            cell.dinnerItemImage.image = imageAvailable
-        } else {
-            cell.imageContainerView.isHidden = true
-            cell.imageSpinner.isHidden = true
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "dinnerItemCell", for: indexPath) as! DinnerItemTableViewCell
+        
+        configureCell(cell: cell, for: indexPath)
         
         return cell
     }
@@ -119,15 +134,17 @@ class DinnerItemTableViewController: UITableViewController {
         let dinnerItemDetailVC = destinationVC?.topViewController as? DinnerItemDetailViewController
         
         // propagate the managedContext
-        dinnerItemDetailVC?.managedContext = managedContext
+        dinnerItemDetailVC?.coreDataStack = coreDataStack
         
         if segue.identifier == "addDinnerItemSegue" {
             // setup if new item added
             dinnerItemDetailVC?.newItem = true
         }
         if segue.identifier == "editDinnerItemSegue" {
-            if let selectedRow = tableView.indexPathForSelectedRow?.row {
-                dinnerItemDetailVC?.dinnerItemDetail = dinnerItems[selectedRow]
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                let dinnerItem = fetchedResultsController.object(at: selectedIndexPath)
+                dinnerItemDetailVC?.dinnerItemDetail = dinnerItem
+                
             } else {
                 dinnerItemDetailVC?.dinnerItemDetail = nil
             }
@@ -140,4 +157,25 @@ class DinnerItemTableViewController: UITableViewController {
     }
 }
 // Extensions and helper functions
+
+extension DinnerItemTableViewController {
+    
+    private func configureCell( cell: DinnerItemTableViewCell, for indexPath: IndexPath){
+        
+        let dinnerItem = fetchedResultsController.object(at: indexPath)
+        
+        cell.cellView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        cell.cellView.layer.cornerRadius = cell.cellView.frame.height / 2
+        cell.name.text = dinnerItem.name
+        // Update the image
+        if let image = dinnerItem.convertNSDataToUIImage(from: dinnerItem.image) {
+            cell.dinnerItemImage.image = image
+            cell.dinnerItemImage.layer.cornerRadius = (cell.dinnerItemImage.frame.height / 2)
+        } else
+        {
+            cell.imageContainerView.isHidden = true
+            cell.imageSpinner.isHidden = true
+        }
+    }
+}
 

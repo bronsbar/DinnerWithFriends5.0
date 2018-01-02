@@ -14,9 +14,9 @@ import CoreData
 class DinnerItemDetailViewController: UIViewController {
     
     var newItem : Bool = false // is set true by when + is selected in the dinnerItemList
-    var dinnerItemDetail : DinnerItem? // will be set when a dinnerItem is passed from the dinnerItem list
+    var dinnerItemDetail : DinnerItems? // will be set when a dinnerItem is passed from the dinnerItem list
     
-    var managedContext : NSManagedObjectContext!
+    var coreDataStack : CoreDataStack!
 
     @IBOutlet weak var notesContainer: UIView! {
         didSet {
@@ -131,18 +131,18 @@ class DinnerItemDetailViewController: UIViewController {
 extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: HelperFunctions
     
-    private func updateFields(with dinnerItem : DinnerItem) {
+    private func updateFields(with dinnerItem : DinnerItems) {
         
-        if let imageAvailable = dinnerItem.image {
-            image.image = imageAvailable
+        if let dinnerItemImage = dinnerItem.convertNSDataToUIImage(from: dinnerItem.image) {
+            image.image = dinnerItemImage
         }
         nameLabel.text = dinnerItem.name
         if let urlAvailable = dinnerItem.url {
             urlLabel.text = String(describing: urlAvailable)
         }
-        if let ratingAvailable = dinnerItem.rating {
-            ratingLabel.text = String(ratingAvailable)
-        }
+//        if let ratingAvailable = dinnerItem.rating {
+//            ratingLabel.text = String(ratingAvailable)
+//        }
         if let notesAvailable = dinnerItem.notes {
             notesLabel.text = notesAvailable
         }
@@ -201,14 +201,14 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
             dismiss(animated: true, completion: nil)
         }
     }
-    private func addDinnerItem() {
-        let dinnerItem = DinnerItems(context: managedContext)
-        dinnerItem.added = NSDate()
-        dinnerItem.lastUpdate = NSDate()
-        let name = nameLabel.text ?? nil
-        dinnerItem.name = name
-        let notes = notesLabel.text ?? nil
-        dinnerItem.notes = notes
-        // add additional elements
-    }
+//    private func addDinnerItem() {
+//        let dinnerItem = DinnerItems(context: managedContext)
+//        dinnerItem.added = NSDate()
+//        dinnerItem.lastUpdate = NSDate()
+//        let name = nameLabel.text ?? nil
+//        dinnerItem.name = name
+//        let notes = notesLabel.text ?? nil
+//        dinnerItem.notes = notes
+//        // add additional elements
+//    }
 }

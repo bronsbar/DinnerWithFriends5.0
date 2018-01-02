@@ -10,26 +10,35 @@ import UIKit
 import CloudKit
 import CoreData
 
-extension UIViewController {
-    var container: CKContainer {
-        return CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
-    }
-}
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack(modelName: "Dinner With Friends")
+    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
       
-        configureCloudKit()
+        
         
         // propagate the managedContext
-        guard let navController = window?.rootViewController?.childViewControllers[0] as? UINavigationController, let viewController = navController.topViewController as? DinnerItemTableViewController else {return true}
-        viewController.managedContext = coreDataStack.managedContext
+        guard let navController = window?.rootViewController as? UINavigationController else {
+            print ("navcontroller niet gevonede")
+            return true
+        }
+        guard let viewController = navController.topViewController as? DinnerItemTableViewController else {
+            print ("managedcontext not propagated")
+            return true}
+    
+        viewController.coreDataStack = coreDataStack
+        
+        
+        configureCloudKit()
+        // if Core Data is empty, import the dinnerItems from Cloudkit
+        importCloudKitDataIfNeeded(toUpdate: viewController)
         return true
     }
 
@@ -56,18 +65,83 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         coreDataStack.saveContext()
     }
+}
 
+// MARK: - Helper Methods
+extension AppDelegate {
+    
+    var container: CKContainer {
+        return CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
+    }
+    
     private func configureCloudKit() {
         let container = CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
         container.privateCloudDatabase.fetchAllRecordZones { zones, error in
             guard let zones = zones, error == nil else {
-            
+                
                 // error handling
                 return
             }
             print ("I have these zones : \(zones)")
+            for zones in zones {
+                print (zones.zoneID.zoneName)
+            }
         }
     }
+    
+    private func importCloudKitDataIfNeeded(toUpdate viewController: DinnerItemTableViewController) {
+        
+        let fetchRequest: NSFetchRequest<DinnerItems> = DinnerItems.fetchRequest()
+        let count = try? coreDataStack.managedContext.count(for: fetchRequest)
+        
+        // check if there are dinnerItems in the coreDataStack
+        guard let dinnerItemsCount = count,
+            dinnerItemsCount == 0 else {
+                return
+        }
+        // When there are no dinnerItems
+        importCloudKitData(toUpdate: viewController)
+        
+    }
+    private func importCloudKitData(toUpdate viewController: DinnerItemTableViewController) {
+        
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "DinnerItem", predicate: predicate)
+        let operation = CKQueryOperation(query: query)
+        operation.recordFetchedBlock = { record in
+            let entityDescription = NSEntityDescription.entity(forEntityName: "DinnerItems", in: self.coreDataStack.managedContext)
+            if let entityDescription = entityDescription {
+                // create DinnerItems objects
+                    let dinnerItem = DinnerItems(from: record, context: self.coreDataStack.managedContext, description: entityDescription)
+                print(dinnerItem.name!)
+                }
+                
+        }
+        operation.queryCompletionBlock = { cursor, error in
+            if let error = error {
+                print ("error, \(error)")
+            }
+            self.coreDataStack.saveContext()
+            // print to console how much in core data
+            let fetchRequest: NSFetchRequest<DinnerItems> = DinnerItems.fetchRequest()
+            let count = try? self.coreDataStack.managedContext.count(for: fetchRequest)
+            print(" number of items loaded : \(String(describing: count))")
+            // when the dinnerItems are saved to Core Data, perform a fetch on the main Queue and reload the data in the tableView
+            DispatchQueue.main.async {
+                do {
+                    try viewController.fetchedResultsController.performFetch()
+                    
+                } catch let error as NSError {
+                    print ("Fetching error: \(error), \(error.userInfo)")
+                }
+                viewController.tableView.reloadData()
+            }
+            
+        }
+        
+        
+        container.privateCloudDatabase.add(operation)
+            }
+    }
 
-}
 

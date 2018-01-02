@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import UIKit
 import CoreData
 import CloudKit
 
@@ -39,30 +40,41 @@ public class DinnerItems: NSManagedObject {
         return coreDinnerItems
     }
     
+    convenience init (from record : CKRecord, context managedContext: NSManagedObjectContext, description: NSEntityDescription) {
+        self.init(entity: description, insertInto: managedContext)
+        let name = record["name"] as! String
+        let myImage = record.assetToNSData()
+        self.image = myImage
+        self.name = name
+        if let urlString = record["url"] as? String, let url = URL(string: urlString) {
+            self.url = url
+        }
+        self.notes = record["notes"] as? String
+        self.rating = 0
+        self.privateUse = true
+       
+    }
+    
+    // Convert NSData tot UIImage
+    func convertNSDataToUIImage(from dataFormat: NSData?) -> UIImage? {
+        guard let imageData = dataFormat, let image = UIImage(data: imageData as Data) else {
+            return nil
+        }
+        return image
+        
+    }
     
 }
-extension DinnerItemTableViewController {
-    
-    // fetch DinnerItems in CloudKit using a CKQuery
-    func fetchDinnerItemsFromCloudKit() {
-        var fetchedItems : [DinnerItem] = []
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "DinnerItem", predicate: predicate)
-        let operation = CKQueryOperation(query: query)
-        operation.recordFetchedBlock = { record in
-            let dinnerItem = DinnerItem(from: record)
-            fetchedItems.append(dinnerItem)
-        }
-        operation.queryCompletionBlock = { cursor, error in
-            if let error = error {
-            print ("error, \(error)")
-            }
-            self.dinnerItems = fetchedItems
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-        self.container.publicCloudDatabase.add(operation)
-    }
 
+    // extension on CKRecord to convert a property of type CKAsset into a UIImage
+    
+    extension CKRecord {
+        func assetToNSData () -> NSData? {
+            if let imageInRecord = self["image"] as? CKAsset, let newImage =  NSData(contentsOfFile: imageInRecord.fileURL.path){
+                return newImage
+            } else {
+                return nil
+            }
+            
+        }
 }
