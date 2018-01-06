@@ -74,7 +74,7 @@ class DinnerItemDetailViewController: UIViewController {
         print("picture tapped")
         updateImage()
     }
-  
+    
     // MARK: Pan the Image
     // helpermethod transform calculates the transform
     private func transform(for translation: CGPoint) -> CGAffineTransform {
@@ -117,15 +117,16 @@ class DinnerItemDetailViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "saveDinnerItemSegue" {
+            addDinnerItem()
+        }
     }
-    */
+
 }
 
 extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -201,14 +202,22 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
             dismiss(animated: true, completion: nil)
         }
     }
-//    private func addDinnerItem() {
-//        let dinnerItem = DinnerItems(context: managedContext)
-//        dinnerItem.added = NSDate()
-//        dinnerItem.lastUpdate = NSDate()
-//        let name = nameLabel.text ?? nil
-//        dinnerItem.name = name
-//        let notes = notesLabel.text ?? nil
-//        dinnerItem.notes = notes
-//        // add additional elements
-//    }
+    
+    private func addDinnerItem() {
+        let dinnerItem = DinnerItems(context: coreDataStack.managedContext)
+        dinnerItem.added = NSDate()
+        dinnerItem.lastUpdate = NSDate()
+        let name = nameLabel.text ?? nil
+        dinnerItem.name = name
+        let notes = notesLabel.text ?? nil
+        dinnerItem.notes = notes
+        dinnerItem.image = dinnerItem.convertUIImageToNSData(from: image.image)
+        do {
+            try coreDataStack.managedContext.save()
+            print ("object saved")
+        } catch let error as NSError {
+            print ("Save error: \(error), description : \(error.userInfo)")
+        }
+        // add additional elements
+    }
 }

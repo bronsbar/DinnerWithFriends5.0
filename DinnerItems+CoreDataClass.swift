@@ -55,13 +55,20 @@ public class DinnerItems: NSManagedObject {
        
     }
     
-    // Convert NSData tot UIImage
+    // Convert NSData to UIImage
     func convertNSDataToUIImage(from dataFormat: NSData?) -> UIImage? {
         guard let imageData = dataFormat, let image = UIImage(data: imageData as Data) else {
             return nil
         }
         return image
         
+    }
+    // Convert UIImage to NSData
+    func convertUIImageToNSData(from image: UIImage?) -> NSData? {
+        guard let image = image, let imageData = UIImagePNGRepresentation(image) as NSData? else {
+            return nil
+        }
+        return imageData
     }
     
 }
