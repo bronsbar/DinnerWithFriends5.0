@@ -26,21 +26,19 @@ class DinnerItemDetailViewController: UIViewController {
             
         }
     }
-    @IBOutlet weak var imageContainer: UIView! {
-        didSet {
-            
-            let shadowPath = UIBezierPath(rect: imageContainer.bounds)
-            imageContainer.layer.masksToBounds = false
-            imageContainer.layer.shadowOpacity = 0.5
-            
-            imageContainer.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            imageContainer.layer.shadowRadius = 5
-            imageContainer.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
-            imageContainer.layer.shadowPath = shadowPath.cgPath
-    
-            
-        }
+    @IBOutlet weak var imageContainer: UIView!
+    // add a dropshadow to the imageContainer
+    override func viewDidLayoutSubviews() {
+        super .viewDidLayoutSubviews()
+        let shadowPath = UIBezierPath(rect: imageContainer.layer.bounds)
+        imageContainer.layer.masksToBounds = false
+        imageContainer.layer.shadowOpacity = 0.5
+        imageContainer.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        imageContainer.layer.shadowRadius = 3
+        imageContainer.layer.shadowOffset = CGSize(width: 0.0, height: -3.0)
+        imageContainer.layer.shadowPath = shadowPath.cgPath
     }
+    
     @IBOutlet weak var image: UIImageView!
     
     @IBOutlet weak var urlLabel: UITextField! {

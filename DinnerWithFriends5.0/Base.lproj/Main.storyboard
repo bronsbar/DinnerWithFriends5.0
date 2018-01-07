@@ -323,7 +323,7 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5Zx-Zy-zWR">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <segue destination="liT-7Y-I2p" kind="unwind" unwindAction="unwindFromDinnerDetailWithSegue:" id="JBT-Mz-dpj"/>
+                                <segue destination="liT-7Y-I2p" kind="unwind" unwindAction="unwindFromDinnerItemDetailCancelWithSegue:" id="Iuz-1w-NEC"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="save" id="62z-Ji-Hxm">

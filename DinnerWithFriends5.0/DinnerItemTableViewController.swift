@@ -88,7 +88,6 @@ class DinnerItemTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "dinnerItemCell", for: indexPath) as! DinnerItemTableViewCell
         
         configureCell(cell: cell, for: indexPath)
-        
         return cell
     }
     
@@ -104,9 +103,10 @@ class DinnerItemTableViewController: UITableViewController {
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
         if editingStyle == .delete {
-            let dinnerToRemove = fetchedResultsController.object(at: indexPath)
-            coreDataStack.managedContext.delete(dinnerToRemove)
+            let dinnerItemToRemove = fetchedResultsController.object(at: indexPath)
+            coreDataStack.managedContext.delete(dinnerItemToRemove)
             do {
                 try coreDataStack.managedContext.save()
             } catch let error as NSError {
@@ -162,7 +162,7 @@ class DinnerItemTableViewController: UITableViewController {
 //            print ("Fetching error: \(error), \(error.userInfo)")
 //        }
     }
-    @IBAction func unwindFromDinnerDetail(segue:UIStoryboardSegue) {
+    @IBAction func unwindFromDinnerItemDetailCancel(segue:UIStoryboardSegue) {
         
     }
 }
