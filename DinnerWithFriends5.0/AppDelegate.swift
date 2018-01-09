@@ -13,7 +13,7 @@ import CoreData
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate{
 
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack(modelName: "Dinner With Friends")
@@ -25,8 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // propagate the managedContext
-        guard let navController = window?.rootViewController as? UINavigationController else {
-            print ("navcontroller niet gevonede")
+        
+        guard let tabBarController = window?.rootViewController as? UITabBarController else { print ("tabbarcontroller niet gevonden")
+            return true
+        }
+        guard let navController = tabBarController.childViewControllers.first as? UINavigationController else {
+            print ("navcontroller niet gevonden")
             return true
         }
         guard let viewController = navController.topViewController as? DinnerItemTableViewController else {

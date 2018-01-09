@@ -65,7 +65,7 @@ public class DinnerItems: NSManagedObject {
     }
     // Convert UIImage to NSData
     func convertUIImageToNSData(from image: UIImage?) -> NSData? {
-        guard let image = image, let imageData = UIImagePNGRepresentation(image) as NSData? else {
+        guard let image = image, let imageData = UIImageJPEGRepresentation(image, 1.0) as NSData? else {
             return nil
         }
         return imageData

@@ -37,6 +37,7 @@ class DinnerItemDetailViewController: UIViewController {
         imageContainer.layer.shadowRadius = 3
         imageContainer.layer.shadowOffset = CGSize(width: 0.0, height: -3.0)
         imageContainer.layer.shadowPath = shadowPath.cgPath
+        
     }
     
     @IBOutlet weak var image: UIImageView!
