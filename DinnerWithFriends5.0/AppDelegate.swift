@@ -36,8 +36,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         guard let viewController = navController.topViewController as? DinnerItemTableViewController else {
             print ("managedcontext not propagated")
             return true}
+        
+        guard let navController2 = tabBarController.childViewControllers[1] as? UINavigationController else {
+            print("tweede navcontroller niet gevonden")
+            return true
+        }
+        guard let viewController2 = navController2.topViewController as? DinnerCreatorViewController else {
+            print( "dinnercreator controller niet gevonden")
+            return true
+        }
+        
     
         viewController.coreDataStack = coreDataStack
+        viewController2.coreDataStack = coreDataStack
         
         
         configureCloudKit()

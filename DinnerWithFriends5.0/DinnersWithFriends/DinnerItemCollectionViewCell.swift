@@ -9,7 +9,8 @@
 import UIKit
 
 class DinnerItemCollectionViewCell: UICollectionViewCell {
-    
     @IBOutlet weak var image: UIImageView!
+    
     @IBOutlet weak var label: UILabel!
+    
 }
