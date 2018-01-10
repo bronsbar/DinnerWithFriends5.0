@@ -18,7 +18,7 @@ class DinnerCreatorViewController: UIViewController{
         let fetchRequest: NSFetchRequest<DinnerItems> = DinnerItems.fetchRequest()
         let sort = NSSortDescriptor(key: #keyPath(DinnerItems.name), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: "DinnerItem")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         return fetchedResultsController
     }()
@@ -28,13 +28,18 @@ class DinnerCreatorViewController: UIViewController{
         dinnerItemsCollectionView.delegate = self
         dinnerItemsCollectionView.dataSource = self
         
+       
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         do {
             try fetchedResultsController.performFetch()
             
         } catch let error as NSError {
             print ("Fetching error: \(error), \(error.userInfo)")
         }
-        
     }
 
  
@@ -71,8 +76,9 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dinnerItemsCollectionViewCell", for: indexPath) as! DinnerItemCollectionViewCell
-        configureCell(cell: cell, at: indexPath)
+            configureCell(cell: cell, at: indexPath)
         return cell
+       
     }
     func configureCell(cell:DinnerItemCollectionViewCell, at indexPath: IndexPath) {
         let dinnerItem = fetchedResultsController.object(at: indexPath)

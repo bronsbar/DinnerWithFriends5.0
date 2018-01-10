@@ -211,12 +211,8 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
         let notes = notesLabel.text ?? nil
         dinnerItem.notes = notes
         dinnerItem.image = dinnerItem.convertUIImageToNSData(from: image.image)
-        do {
-            try coreDataStack.managedContext.save()
-            print ("object saved")
-        } catch let error as NSError {
-            print ("Save error: \(error), description : \(error.userInfo)")
+        coreDataStack.saveContext()
+//        clearCaches()
         }
-        // add additional elements
-    }
+    
 }

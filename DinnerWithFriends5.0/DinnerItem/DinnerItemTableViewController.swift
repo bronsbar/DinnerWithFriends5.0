@@ -19,7 +19,7 @@ class DinnerItemTableViewController: UITableViewController {
         let fetchRequest: NSFetchRequest<DinnerItems> = DinnerItems.fetchRequest()
         let sort = NSSortDescriptor(key: #keyPath(DinnerItems.name), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: "DinnerItem")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         return fetchedResultsController
     }()
@@ -107,11 +107,8 @@ class DinnerItemTableViewController: UITableViewController {
         if editingStyle == .delete {
             let dinnerItemToRemove = fetchedResultsController.object(at: indexPath)
             coreDataStack.managedContext.delete(dinnerItemToRemove)
-            do {
-                try coreDataStack.managedContext.save()
-            } catch let error as NSError {
-                print("saving error: \(error), description : \(error.userInfo)")
-            }
+            coreDataStack.saveContext()
+//            clearCaches()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -203,6 +200,7 @@ extension DinnerItemTableViewController: NSFetchedResultsControllerDelegate {
             tableView.insertRows(at: [newIndexPath!], with: .automatic)
         case .delete:
             tableView.deleteRows(at: [indexPath!], with:.automatic)
+           
         case .update:
             let cell = tableView.cellForRow(at: indexPath!) as! DinnerItemTableViewCell
             configureCell(cell: cell, for: indexPath!)
@@ -214,6 +212,15 @@ extension DinnerItemTableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+    }
+}
+
+extension UIViewController {
+    func clearCaches() {
+        let cacheNames = ["DinnerItem","Dinner"]
+        for cache in cacheNames {
+            NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: cache)
+        }
     }
 }
 
