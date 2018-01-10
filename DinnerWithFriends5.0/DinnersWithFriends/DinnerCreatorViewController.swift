@@ -12,6 +12,7 @@ import CoreData
 class DinnerCreatorViewController: UIViewController{
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     
+    @IBOutlet weak var dinnerCollectioView: UICollectionView!
     var coreDataStack : CoreDataStack!
     
     lazy var fetchedResultsController: NSFetchedResultsController<DinnerItems> = {
@@ -22,16 +23,12 @@ class DinnerCreatorViewController: UIViewController{
         fetchedResultsController.delegate = self
         return fetchedResultsController
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dinnerItemsCollectionView.delegate = self
         dinnerItemsCollectionView.dataSource = self
-        
-       
-        
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         do {
@@ -40,10 +37,8 @@ class DinnerCreatorViewController: UIViewController{
         } catch let error as NSError {
             print ("Fetching error: \(error), \(error.userInfo)")
         }
+        dinnerItemsCollectionView.reloadData()
     }
-
- 
-
     /*
     // MARK: - Navigation
 

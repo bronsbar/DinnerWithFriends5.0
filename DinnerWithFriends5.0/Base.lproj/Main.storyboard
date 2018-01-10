@@ -540,6 +540,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Create Dinner" id="LDf-mM-H9A"/>
                     <connections>
+                        <outlet property="dinnerCollectioView" destination="LMU-7F-weW" id="w3X-ig-AIm"/>
                         <outlet property="dinnerItemsCollectionView" destination="xjr-eM-s9X" id="XC1-JS-Q40"/>
                     </connections>
                 </viewController>
@@ -604,20 +605,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vc0-MQ-pMv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-224" y="789.80509745127438"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="04s-5m-dDL">
-            <objects>
-                <viewController id="BPL-uB-PGe" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="OcP-r2-niT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="qj3-N0-bU4"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wJV-d1-Y4Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <resources>
