@@ -541,7 +541,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Create Dinner" id="LDf-mM-H9A"/>
                     <connections>
-                        <outlet property="dinnerCollectioView" destination="LMU-7F-weW" id="w3X-ig-AIm"/>
+                        <outlet property="dinnerCollectionView" destination="LMU-7F-weW" id="0wV-M0-lC1"/>
                         <outlet property="dinnerItemsCollectionView" destination="xjr-eM-s9X" id="XC1-JS-Q40"/>
                     </connections>
                 </viewController>

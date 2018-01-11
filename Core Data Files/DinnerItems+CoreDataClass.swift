@@ -8,12 +8,13 @@
 //
 
 import Foundation
+import MobileCoreServices
 import UIKit
 import CoreData
 import CloudKit
 
 @objc(DinnerItems)
-public class DinnerItems: NSManagedObject {
+final public class DinnerItems: NSManagedObject {
     
     // enum with dinnerItem Categories
     enum DinnerItemCategory: String {
@@ -70,6 +71,7 @@ public class DinnerItems: NSManagedObject {
         }
         return imageData
     }
+   
     
 }
 

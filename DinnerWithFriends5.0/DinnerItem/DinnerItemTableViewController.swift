@@ -19,7 +19,7 @@ class DinnerItemTableViewController: UITableViewController {
         let fetchRequest: NSFetchRequest<DinnerItems> = DinnerItems.fetchRequest()
         let sort = NSSortDescriptor(key: #keyPath(DinnerItems.name), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: "DinnerItemsCache")
         fetchedResultsController.delegate = self
         return fetchedResultsController
     }()

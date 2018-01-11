@@ -10,9 +10,11 @@ import UIKit
 import CoreData
 
 class DinnerCreatorViewController: UIViewController{
+    
+    
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     
-    @IBOutlet weak var dinnerCollectioView: UICollectionView!
+    @IBOutlet weak var dinnerCollectionView: UICollectionView!
     // coreDataStack initialized from AppDelegate
     var coreDataStack : CoreDataStack!
     // fetchedResultsController
@@ -27,11 +29,22 @@ class DinnerCreatorViewController: UIViewController{
     // array of BlockOperations to execute multiple changes in nsfetchedresultscontroller, used in the extension delegate for nsfetchedresultscontroller
     var blockOperation = [BlockOperation]()
     
+    // Dinner array holding the selected dinnerItems
+    var dinnerCreation = [DinnerCreation]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Set collectionView delegate and datasource
         dinnerItemsCollectionView.delegate = self
         dinnerItemsCollectionView.dataSource = self
+        dinnerCollectionView.delegate = self
+        dinnerCollectionView.dataSource = self
+        
+        // assign the dropDelegate for the dinnerCollectionView to self
+        dinnerCollectionView.dropDelegate = self
+        
+        // assign the dragDelegate for the dinnerItemsCollectionView to self
+        dinnerItemsCollectionView.dragDelegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -99,19 +112,35 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if let numberOfObjects = fetchedResultsController.fetchedObjects?.count {
-            return numberOfObjects
-        } else {
-            return 0
+        var numberOfItems : Int = 0
+        switch collectionView {
+        case dinnerItemsCollectionView:
+            if let numberOfObjects = fetchedResultsController.fetchedObjects?.count {
+                numberOfItems = numberOfObjects
+            }
+        case dinnerCollectionView:
+            numberOfItems = dinnerCreation.count
+        default:
+            numberOfItems = 0
         }
+        return numberOfItems
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dinnerItemsCollectionViewCell", for: indexPath) as! DinnerItemCollectionViewCell
+        if collectionView == dinnerItemsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dinnerItemsCollectionViewCell", for: indexPath) as! DinnerItemCollectionViewCell
             configureCell(cell: cell, at: indexPath)
-        return cell
-       
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dinnerCollectionViewCell", for: indexPath) as! DinnerCollectionViewCell
+           let dinnerItem = dinnerCreation[indexPath.item]
+            let image = dinnerItem.image
+            cell.image.image = image
+            return cell
+        }
     }
+    
     func configureCell(cell:DinnerItemCollectionViewCell, at indexPath: IndexPath) {
         let dinnerItem = fetchedResultsController.object(at: indexPath)
         
@@ -122,5 +151,55 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
         
     }
     
+}
+
+// MARK: -CollectionView drop delegate
+extension DinnerCreatorViewController : UICollectionViewDropDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        if collectionView == dinnerCollectionView {
+            return session.canLoadObjects(ofClass: UIImage.self)
+        } else {
+            return false
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0)
+        coordinator.session.loadObjects(ofClass: UIImage.self) { (images) in
+            guard let imagesArray = images as? [UIImage] else {return}
+            
+            collectionView.performBatchUpdates({
+                let newDinnerCreation = DinnerCreation()
+                newDinnerCreation.image = imagesArray.first
+                self.dinnerCreation.insert(newDinnerCreation, at: destinationIndexPath.item)
+                collectionView.insertItems(at: [destinationIndexPath])
+            })
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        // when the session drags from within the collectionview
+        if session.localDragSession != nil {
+            return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        } else {
+            // when the session drags from somewhere else
+            return UICollectionViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+        }
+    }
+}
+
+// MARK: -CollectionView Drag Delegate
+
+extension DinnerCreatorViewController: UICollectionViewDragDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+       return []
+    }
+}
+
+
+class DinnerCreation {
+    var image : UIImage!
     
 }

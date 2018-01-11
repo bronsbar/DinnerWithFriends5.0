@@ -6,11 +6,13 @@
 //  Copyright © 2017 Bart Bronselaer. All rights reserved.
 //
 //
-
+import MobileCoreServices
 import Foundation
 import CoreData
 
 @objc(Dinners)
 public class Dinners: NSManagedObject {
+    
+   
 
 }
