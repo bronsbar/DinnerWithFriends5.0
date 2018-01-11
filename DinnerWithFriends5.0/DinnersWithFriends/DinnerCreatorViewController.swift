@@ -54,6 +54,8 @@ class DinnerCreatorViewController: UIViewController{
 // MARK: -NSFetchedResultsControllerDelegate
 
 extension DinnerCreatorViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    }
     
 }
 

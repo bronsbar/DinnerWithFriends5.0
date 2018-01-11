@@ -72,6 +72,8 @@
 				C96FA9401FF543EB00AB520A /* Dinners+CoreDataProperties.swift */,
 				C96FA9411FF543EB00AB520A /* DinnerItems+CoreDataClass.swift */,
 				C96FA9421FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift */,
+				C945E4061FF4D038003294F3 /* CoreDataStack.swift */,
+				C945E4081FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld */,
 				C9483ABF1FEA93F4003C0812 /* DinnerWithFriends5.0 */,
 				C9483ABE1FEA93F4003C0812 /* Products */,
 				C9483AD31FEA9400003C0812 /* Frameworks */,
@@ -91,7 +93,6 @@
 			children = (
 				C9483AD21FEA93FE003C0812 /* DinnerWithFriends5.0.entitlements */,
 				C9483AC01FEA93F4003C0812 /* AppDelegate.swift */,
-				C945E4081FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld */,
 				C9483ADA1FEAB16A003C0812 /* Dinner.swift */,
 				C9483ADC1FEAB192003C0812 /* DinnerItem.swift */,
 				CC947BC62005438C00621FDB /* DinnersWithFriends */,
@@ -100,7 +101,6 @@
 				C9483AC71FEA93F4003C0812 /* Assets.xcassets */,
 				C9483AC91FEA93F4003C0812 /* LaunchScreen.storyboard */,
 				C9483ACC1FEA93F4003C0812 /* Info.plist */,
-				C945E4061FF4D038003294F3 /* CoreDataStack.swift */,
 			);
 			path = DinnerWithFriends5.0;
 			sourceTree = "<group>";

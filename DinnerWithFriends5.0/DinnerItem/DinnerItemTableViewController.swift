@@ -170,9 +170,9 @@ extension DinnerItemTableViewController {
     private func configureCell( cell: DinnerItemTableViewCell, for indexPath: IndexPath){
         
         let dinnerItem = fetchedResultsController.object(at: indexPath)
-        
-        cell.cellView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        cell.cellView.layer.cornerRadius = cell.cellView.frame.height / 2
+        // set a lightgray background and rounded corners
+//        cell.cellView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+//        cell.cellView.layer.cornerRadius = cell.cellView.frame.height / 2
         cell.name.text = dinnerItem.name
         // Update the image
         if let image = dinnerItem.convertNSDataToUIImage(from: dinnerItem.image) {
