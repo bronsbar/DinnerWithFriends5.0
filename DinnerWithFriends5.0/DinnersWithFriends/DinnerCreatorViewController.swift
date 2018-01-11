@@ -5,7 +5,7 @@
 //  Created by Bart Bronselaer on 9/01/18.
 //  Copyright © 2018 Bart Bronselaer. All rights reserved.
 //
-
+import Foundation
 import UIKit
 import CoreData
 
@@ -13,19 +13,23 @@ class DinnerCreatorViewController: UIViewController{
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     
     @IBOutlet weak var dinnerCollectioView: UICollectionView!
+    // coreDataStack initialized from AppDelegate
     var coreDataStack : CoreDataStack!
-    
+    // fetchedResultsController
     lazy var fetchedResultsController: NSFetchedResultsController<DinnerItems> = {
         let fetchRequest: NSFetchRequest<DinnerItems> = DinnerItems.fetchRequest()
         let sort = NSSortDescriptor(key: #keyPath(DinnerItems.name), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: "DinnerCreator")
         fetchedResultsController.delegate = self
         return fetchedResultsController
     }()
+    // array of BlockOperations to execute multiple changes in nsfetchedresultscontroller, used in the extension delegate for nsfetchedresultscontroller
+    var blockOperation = [BlockOperation]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Set collectionView delegate and datasource
         dinnerItemsCollectionView.delegate = self
         dinnerItemsCollectionView.dataSource = self
     }
@@ -37,7 +41,7 @@ class DinnerCreatorViewController: UIViewController{
         } catch let error as NSError {
             print ("Fetching error: \(error), \(error.userInfo)")
         }
-        dinnerItemsCollectionView.reloadData()
+//        dinnerItemsCollectionView.reloadData()
     }
     /*
     // MARK: - Navigation
@@ -54,9 +58,40 @@ class DinnerCreatorViewController: UIViewController{
 // MARK: -NSFetchedResultsControllerDelegate
 
 extension DinnerCreatorViewController: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    }
     
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            // use block operations for multiple inserts
+            blockOperation.append(BlockOperation(block: {
+                self.dinnerItemsCollectionView.insertItems(at: [newIndexPath!])
+            }))
+            
+        case .delete:
+            // use block operations for multiple deletes
+            blockOperation.append(BlockOperation(block: {
+               self.dinnerItemsCollectionView.deleteItems(at: [indexPath!])
+            }))
+            
+        case .update:
+            let cell = dinnerItemsCollectionView.cellForItem(at: indexPath!) as! DinnerItemCollectionViewCell
+            configureCell(cell: cell, at: indexPath!)
+        case .move:
+            dinnerItemsCollectionView.deleteItems(at: [indexPath!])
+            dinnerItemsCollectionView.insertItems(at: [newIndexPath!])
+        }
+    }
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        dinnerItemsCollectionView.performBatchUpdates({
+            // start the operations logged in blockoperation
+            for operation in blockOperation {
+                operation.start()
+            }
+        }) { (completed) in
+            self.blockOperation = []
+        }
+    }
 }
 
 // MARK: -UICollectionView datasource and delegate

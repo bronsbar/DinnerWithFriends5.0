@@ -68,12 +68,7 @@
 		C9483AB41FEA93F4003C0812 = {
 			isa = PBXGroup;
 			children = (
-				C96FA93F1FF543EB00AB520A /* Dinners+CoreDataClass.swift */,
-				C96FA9401FF543EB00AB520A /* Dinners+CoreDataProperties.swift */,
-				C96FA9411FF543EB00AB520A /* DinnerItems+CoreDataClass.swift */,
-				C96FA9421FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift */,
-				C945E4061FF4D038003294F3 /* CoreDataStack.swift */,
-				C945E4081FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld */,
+				CC6255DF20077CAE00D355B4 /* Core Data Files */,
 				C9483ABF1FEA93F4003C0812 /* DinnerWithFriends5.0 */,
 				C9483ABE1FEA93F4003C0812 /* Products */,
 				C9483AD31FEA9400003C0812 /* Frameworks */,
@@ -111,6 +106,19 @@
 				C9483AD41FEA9400003C0812 /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC6255DF20077CAE00D355B4 /* Core Data Files */ = {
+			isa = PBXGroup;
+			children = (
+				C96FA9421FF543EB00AB520A /* DinnerItems+CoreDataProperties.swift */,
+				C96FA93F1FF543EB00AB520A /* Dinners+CoreDataClass.swift */,
+				C96FA9401FF543EB00AB520A /* Dinners+CoreDataProperties.swift */,
+				C96FA9411FF543EB00AB520A /* DinnerItems+CoreDataClass.swift */,
+				C945E4061FF4D038003294F3 /* CoreDataStack.swift */,
+				C945E4081FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld */,
+			);
+			path = "Core Data Files";
 			sourceTree = "<group>";
 		};
 		CC947BC62005438C00621FDB /* DinnersWithFriends */ = {
