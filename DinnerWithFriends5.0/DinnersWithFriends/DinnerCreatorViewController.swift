@@ -194,7 +194,13 @@ extension DinnerCreatorViewController : UICollectionViewDropDelegate {
 extension DinnerCreatorViewController: UICollectionViewDragDelegate {
     
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-       return []
+        print(indexPath)
+    let dinnerItemSelected = fetchedResultsController.object(at: indexPath)
+        let image = dinnerItemSelected.convertNSDataToUIImage(from: dinnerItemSelected.image)!
+        
+        let itemProvider = NSItemProvider(object: image)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+       return [dragItem]
     }
 }
 
