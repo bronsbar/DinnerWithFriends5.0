@@ -45,6 +45,7 @@ class DinnerCreatorViewController: UIViewController{
         
         // assign the dragDelegate for the dinnerItemsCollectionView to self
         dinnerItemsCollectionView.dragDelegate = self
+        dinnerItemsCollectionView.dragInteractionEnabled = true
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
