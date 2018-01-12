@@ -10,6 +10,11 @@ import UIKit
 
 class DinnerCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var image: UIImageView! {
+        didSet {
+            image.clipsToBounds = true
+            image.layer.cornerRadius = image.bounds.height * 0.2
+        }
+    }
     @IBOutlet weak var label: UILabel!
 }

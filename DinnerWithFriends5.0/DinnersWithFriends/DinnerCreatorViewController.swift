@@ -11,10 +11,19 @@ import CoreData
 
 class DinnerCreatorViewController: UIViewController{
     
-    
+    // MARK: - Outlets
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
-    
     @IBOutlet weak var dinnerCollectionView: UICollectionView!
+    @IBOutlet weak var tafelKleed: UIImageView! {
+        didSet {
+            tafelKleed.clipsToBounds = true
+            tafelKleed.layer.cornerRadius = tafelKleed.bounds.height * 0.1
+            
+        }
+    }
+    
+    // MARK: - Properties
+    
     // coreDataStack initialized from AppDelegate
     var coreDataStack : CoreDataStack!
     // fetchedResultsController
@@ -34,16 +43,19 @@ class DinnerCreatorViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Set collectionView delegate and datasource
         dinnerItemsCollectionView.delegate = self
         dinnerItemsCollectionView.dataSource = self
         dinnerCollectionView.delegate = self
         dinnerCollectionView.dataSource = self
         
-        // assign the dropDelegate for the dinnerCollectionView to self
+        // assign the drag and dropDelegate for the dinnerCollectionView to self and enable drag
         dinnerCollectionView.dropDelegate = self
+        dinnerCollectionView.dragDelegate = self
+        dinnerCollectionView.dragInteractionEnabled = true
         
-        // assign the dragDelegate for the dinnerItemsCollectionView to self
+        // assign the dragDelegate for the dinnerItemsCollectionView to self and enable drag
         dinnerItemsCollectionView.dragDelegate = self
         dinnerItemsCollectionView.dragInteractionEnabled = true
     }
@@ -55,7 +67,7 @@ class DinnerCreatorViewController: UIViewController{
         } catch let error as NSError {
             print ("Fetching error: \(error), \(error.userInfo)")
         }
-//        dinnerItemsCollectionView.reloadData()
+
     }
     /*
     // MARK: - Navigation

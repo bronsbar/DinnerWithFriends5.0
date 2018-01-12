@@ -177,7 +177,6 @@ extension DinnerItemTableViewController {
         // Update the image
         if let image = dinnerItem.convertNSDataToUIImage(from: dinnerItem.image) {
             cell.dinnerItemImage.image = image
-            cell.dinnerItemImage.layer.cornerRadius = (cell.dinnerItemImage.frame.height / 2)
         } else
         {
             cell.imageContainerView.isHidden = true

@@ -17,7 +17,7 @@ class DinnerItemTableViewCell: UITableViewCell {
     @IBOutlet weak var imageContainerView: UIView! {
         didSet {
             imageContainerView.clipsToBounds = true
-            imageContainerView.layer.cornerRadius = imageContainerView.bounds.height / 2
+            imageContainerView.layer.cornerRadius = imageContainerView.bounds.height * 0.2
         }
     }
 
