@@ -14,13 +14,7 @@ class DinnerCreatorViewController: UIViewController{
     // MARK: - Outlets
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     @IBOutlet weak var dinnerCollectionView: UICollectionView!
-    @IBOutlet weak var tafelKleed: UIImageView! {
-        didSet {
-            tafelKleed.clipsToBounds = true
-            tafelKleed.layer.cornerRadius = tafelKleed.bounds.height * 0.1
-            
-        }
-    }
+    @IBOutlet weak var tafelKleed: UIImageView! 
     
     // MARK: - Properties
     
