@@ -393,7 +393,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stock-photo-group-of-friends-making-toast-around-table-at-dinner-party-165815270" translatesAutoresizingMaskIntoConstraints="NO" id="b1O-8i-0I0" userLabel="background Picture">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stock-photo-group-of-friends-making-toast-around-table-at-dinner-party-165815270" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b1O-8i-0I0" userLabel="background Picture">
                                 <rect key="frame" x="0.0" y="197" width="375" height="470"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E1M-dK-FVv">
@@ -501,10 +501,14 @@
                                         <constraints>
                                             <constraint firstItem="gPS-Sc-R1M" firstAttribute="leading" secondItem="Tdy-n2-Jal" secondAttribute="leading" id="7HS-xi-nWi"/>
                                             <constraint firstItem="gPS-Sc-R1M" firstAttribute="height" secondItem="5gm-H5-Cvz" secondAttribute="height" multiplier="0.25" id="9wM-3R-uni"/>
+                                            <constraint firstAttribute="trailing" secondItem="5gm-H5-Cvz" secondAttribute="trailing" id="BWd-6D-bHc"/>
                                             <constraint firstItem="5gm-H5-Cvz" firstAttribute="leading" secondItem="Tdy-n2-Jal" secondAttribute="leading" id="Fjp-xu-EGa"/>
                                             <constraint firstAttribute="trailing" secondItem="gPS-Sc-R1M" secondAttribute="trailing" id="K6p-tP-tB6"/>
                                             <constraint firstAttribute="bottom" secondItem="5gm-H5-Cvz" secondAttribute="bottom" id="L0K-9C-tbn"/>
+                                            <constraint firstAttribute="bottom" secondItem="5gm-H5-Cvz" secondAttribute="bottom" id="QqK-Vk-sUv"/>
                                             <constraint firstItem="5gm-H5-Cvz" firstAttribute="top" secondItem="Tdy-n2-Jal" secondAttribute="top" id="Tgh-vC-kJG"/>
+                                            <constraint firstItem="5gm-H5-Cvz" firstAttribute="leading" secondItem="Tdy-n2-Jal" secondAttribute="leading" id="XOT-C2-ikm"/>
+                                            <constraint firstItem="5gm-H5-Cvz" firstAttribute="top" secondItem="Tdy-n2-Jal" secondAttribute="top" id="h9L-n7-lwg"/>
                                             <constraint firstAttribute="trailing" secondItem="5gm-H5-Cvz" secondAttribute="trailing" id="rm9-xr-Cxd"/>
                                             <constraint firstAttribute="bottom" secondItem="gPS-Sc-R1M" secondAttribute="bottom" id="w12-3W-hwb"/>
                                         </constraints>
@@ -516,9 +520,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LMU-7F-weW" userLabel="dinnerCollectionView">
-                                <rect key="frame" x="0.0" y="390" width="375" height="228"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LMU-7F-weW" userLabel="dinnerCollectionView">
+                                <rect key="frame" x="0.0" y="396.5" width="375" height="221.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3C8-AL-B8u">
                                     <size key="itemSize" width="90" height="90"/>
@@ -576,12 +579,16 @@
                         <constraints>
                             <constraint firstItem="b1O-8i-0I0" firstAttribute="top" secondItem="xjr-eM-s9X" secondAttribute="bottom" id="5vb-MF-4Ds"/>
                             <constraint firstItem="xjr-eM-s9X" firstAttribute="trailing" secondItem="5Pf-aA-ZXa" secondAttribute="trailing" id="8iv-S9-Cll"/>
+                            <constraint firstItem="LMU-7F-weW" firstAttribute="centerX" secondItem="MoO-bA-dMn" secondAttribute="centerX" id="AJE-pe-QiV"/>
+                            <constraint firstItem="LMU-7F-weW" firstAttribute="height" secondItem="5Pf-aA-ZXa" secondAttribute="height" multiplier="0.4" id="Lvg-R6-yYT"/>
                             <constraint firstItem="E1M-dK-FVv" firstAttribute="leading" secondItem="5Pf-aA-ZXa" secondAttribute="leading" id="QRA-GI-6NR"/>
                             <constraint firstAttribute="bottom" secondItem="b1O-8i-0I0" secondAttribute="bottom" id="TSF-9h-8SC"/>
                             <constraint firstItem="xjr-eM-s9X" firstAttribute="height" secondItem="5Pf-aA-ZXa" secondAttribute="height" multiplier="0.15" id="Yp1-V4-pbo"/>
+                            <constraint firstItem="LMU-7F-weW" firstAttribute="width" secondItem="5Pf-aA-ZXa" secondAttribute="width" id="htJ-OT-ScQ"/>
                             <constraint firstItem="b1O-8i-0I0" firstAttribute="leading" secondItem="5Pf-aA-ZXa" secondAttribute="leading" id="kzd-Fb-6Hn"/>
                             <constraint firstItem="E1M-dK-FVv" firstAttribute="top" secondItem="5Pf-aA-ZXa" secondAttribute="top" id="m3T-Fl-BFr"/>
                             <constraint firstItem="E1M-dK-FVv" firstAttribute="trailing" secondItem="5Pf-aA-ZXa" secondAttribute="trailing" id="qOV-WR-Ctb"/>
+                            <constraint firstItem="5Pf-aA-ZXa" firstAttribute="bottom" secondItem="LMU-7F-weW" secondAttribute="bottom" id="rlD-fd-o8Q"/>
                             <constraint firstItem="b1O-8i-0I0" firstAttribute="trailing" secondItem="5Pf-aA-ZXa" secondAttribute="trailing" id="ts3-nS-DUt"/>
                             <constraint firstItem="xjr-eM-s9X" firstAttribute="leading" secondItem="5Pf-aA-ZXa" secondAttribute="leading" id="vwW-a0-g1I"/>
                             <constraint firstItem="xjr-eM-s9X" firstAttribute="top" secondItem="E1M-dK-FVv" secondAttribute="bottom" id="yWP-en-g3F"/>
