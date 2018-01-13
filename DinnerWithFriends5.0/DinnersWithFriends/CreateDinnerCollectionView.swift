@@ -11,10 +11,10 @@ import UIKit
 class CreateDinnerCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource{
     
     
-    var menuItems = ["searchIcon"]
+    var menuItems = ["friendsIcon", "dinnerItemIcon", "wineIcon", "dessertsIcon","searchIcon"]
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

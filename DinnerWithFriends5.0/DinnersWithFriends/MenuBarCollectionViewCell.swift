@@ -11,4 +11,12 @@ import UIKit
 class MenuBarCollectionViewCell: UICollectionViewCell {
    @IBOutlet weak var menuBarImage : UIImageView!
     
+    override var isHighlighted: Bool {
+        didSet {
+            
+            menuBarImage.tintColor = isHighlighted ? UIColor.darkGray : UIColor.white
+        }
+    }
+    
+    
 }
