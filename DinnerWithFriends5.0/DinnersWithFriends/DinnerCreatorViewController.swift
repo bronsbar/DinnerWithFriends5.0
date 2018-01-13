@@ -18,6 +18,7 @@ class DinnerCreatorViewController: UIViewController{
  
     @IBOutlet weak var dinnerItemCollectionTopConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var menuBarCollectionView: CreateDinnerCollectionView!
     
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     @IBOutlet weak var dinnerCollectionView: UICollectionView!
@@ -59,7 +60,15 @@ class DinnerCreatorViewController: UIViewController{
         // assign the dragDelegate for the dinnerItemsCollectionView to self and enable drag
         dinnerItemsCollectionView.dragDelegate = self
         dinnerItemsCollectionView.dragInteractionEnabled = true
+        
+        // assign menubar delegate and datasource
+        menuBarCollectionView.delegate = menuBarCollectionView
+        menuBarCollectionView.dataSource = menuBarCollectionView
+    
+    
     }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         do {

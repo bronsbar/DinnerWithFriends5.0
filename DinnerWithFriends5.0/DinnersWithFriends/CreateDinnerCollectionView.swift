@@ -8,7 +8,21 @@
 
 import UIKit
 
-class CreateDinnerCollectionView: UICollectionView {
+class CreateDinnerCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource{
+    
+    
+    var menuItems = ["searchIcon"]
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "menuCell", for: indexPath) as! MenuBarCollectionViewCell
+        cell.menuBarImage.image = UIImage(named: menuItems[indexPath.row])
+        return cell
+    }
+    
 
     /*
     // Only override draw() if you perform custom drawing.
@@ -19,3 +33,4 @@ class CreateDinnerCollectionView: UICollectionView {
     */
 
 }
+
