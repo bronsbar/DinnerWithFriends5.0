@@ -26,6 +26,7 @@
 		C9CC2C2220055FE500B4E5AD /* DinnerCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CC2C2120055FE500B4E5AD /* DinnerCreatorViewController.swift */; };
 		C9CC2C242005D6CD00B4E5AD /* DinnerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CC2C232005D6CD00B4E5AD /* DinnerCollectionViewCell.swift */; };
 		CC947BC52005437200621FDB /* DinnerItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC947BC42005437200621FDB /* DinnerItemCollectionViewCell.swift */; };
+		CC987D082009F47500C9C427 /* CreateDinnerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC987D072009F47500C9C427 /* CreateDinnerCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		C9CC2C2120055FE500B4E5AD /* DinnerCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerCreatorViewController.swift; sourceTree = "<group>"; };
 		C9CC2C232005D6CD00B4E5AD /* DinnerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC947BC42005437200621FDB /* DinnerItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		CC987D072009F47500C9C427 /* CreateDinnerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDinnerCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				C9CC2C2120055FE500B4E5AD /* DinnerCreatorViewController.swift */,
+				CC987D072009F47500C9C427 /* CreateDinnerCollectionView.swift */,
 				CC947BC42005437200621FDB /* DinnerItemCollectionViewCell.swift */,
 				C9CC2C232005D6CD00B4E5AD /* DinnerCollectionViewCell.swift */,
 			);
@@ -233,6 +236,7 @@
 				C96FA9451FF543EB00AB520A /* DinnerItems+CoreDataClass.swift in Sources */,
 				C945E4071FF4D038003294F3 /* CoreDataStack.swift in Sources */,
 				C945E40A1FF4D28C003294F3 /* Dinner With Friends.xcdatamodeld in Sources */,
+				CC987D082009F47500C9C427 /* CreateDinnerCollectionView.swift in Sources */,
 				C96FA9431FF543EB00AB520A /* Dinners+CoreDataClass.swift in Sources */,
 				CC947BC52005437200621FDB /* DinnerItemCollectionViewCell.swift in Sources */,
 				C9CC2C2220055FE500B4E5AD /* DinnerCreatorViewController.swift in Sources */,

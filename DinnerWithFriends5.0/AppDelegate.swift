@@ -54,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         configureCloudKit()
         // if Core Data is empty, import the dinnerItems from Cloudkit
         importCloudKitDataIfNeeded(toUpdate: viewController)
+       
+        
         return true
     }
 

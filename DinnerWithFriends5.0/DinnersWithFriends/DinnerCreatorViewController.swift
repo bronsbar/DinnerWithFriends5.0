@@ -12,6 +12,13 @@ import CoreData
 class DinnerCreatorViewController: UIViewController{
     
     // MARK: - Outlets
+    @IBOutlet weak var wrapperViewDinnerItemCollection: UIView!
+    
+    @IBOutlet weak var wrapperViewHeightConstraint: NSLayoutConstraint!
+ 
+    @IBOutlet weak var dinnerItemCollectionTopConstraint: NSLayoutConstraint!
+    
+    
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     @IBOutlet weak var dinnerCollectionView: UICollectionView!
     @IBOutlet weak var tafelKleed: UIImageView! 
