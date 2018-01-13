@@ -17,6 +17,11 @@ class MenuBarCollectionViewCell: UICollectionViewCell {
             menuBarImage.tintColor = isHighlighted ? UIColor.darkGray : UIColor.white
         }
     }
+    override var isSelected: Bool {
+        didSet {
+            menuBarImage.tintColor = isSelected ? UIColor.darkGray: UIColor.white
+        }
+    }
     
     
 }
