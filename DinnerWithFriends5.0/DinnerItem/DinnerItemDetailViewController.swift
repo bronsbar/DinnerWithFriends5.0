@@ -26,9 +26,7 @@ class DinnerItemDetailViewController: UIViewController {
         didSet {
             guard categorySelected != "" else {return}
             let image = UIImage(named: categorySelected)
-            DispatchQueue.main.async {
-                self.updateCategorySelection(with: image)
-            }
+            self.updateCategorySelection(with: image)
         }
     }
     
@@ -36,9 +34,9 @@ class DinnerItemDetailViewController: UIViewController {
     
     @IBOutlet weak var wrapperViewCategoryBar: UIView!
     
-    @IBOutlet weak var wrapperViewHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var categoryBarEdgeContstraint: NSLayoutConstraint!
+    @IBOutlet var categoryBarEdgeContstraint: NSLayoutConstraint!
+    
     var wrapperViewZeroHeightConstraint : NSLayoutConstraint!
     
     @IBOutlet weak var categoryBarCollectionView: DinnerDetailCategoryCollectionView!
@@ -46,7 +44,11 @@ class DinnerItemDetailViewController: UIViewController {
     
     
     
-    @IBOutlet weak var selectedCategoryImage: UIImageView!
+    @IBOutlet weak var selectedCategoryImage: UIImageView! {
+        didSet {
+            selectedCategoryImage.tintColor = UIColor.darkGray
+        }
+    }
     @IBOutlet weak var notesContainer: UIView! {
         didSet {
             notesContainer.layer.borderColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
@@ -58,6 +60,10 @@ class DinnerItemDetailViewController: UIViewController {
     @IBOutlet weak var imageContainer: UIView!
     // add a dropshadow to the imageContainer
     
+    @IBAction func categoryImageTapped(_ sender: Any) {
+        print("categoryimage tapped")
+        animateCategoryMenuBar()
+    }
     
     override func viewDidLayoutSubviews() {
         super .viewDidLayoutSubviews()
@@ -141,7 +147,7 @@ class DinnerItemDetailViewController: UIViewController {
         }
         
         // set delegate and datasource for categoryBarCollectionview as an extension
-       categoryBarCollectionView.delegate = self
+        categoryBarCollectionView.delegate = self
         categoryBarCollectionView.dataSource = self
     }
 
@@ -168,6 +174,13 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
     
     private func updateFields(with dinnerItem : DinnerItems) {
         
+        if let category = dinnerItem.category {
+            // if there is a category animate categoryMenuBar to disappear and update the categoryImage
+            animateCategoryMenuBar()
+            selectedCategoryImage.image = UIImage(named: category)
+            
+        }
+        
         if let dinnerItemImage = dinnerItem.convertNSDataToUIImage(from: dinnerItem.image) {
             image.image = dinnerItemImage
         }
@@ -181,6 +194,7 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
         if let notesAvailable = dinnerItem.notes {
             notesLabel.text = notesAvailable
         }
+        
     }
     private func updateSaveButtonStatus()-> Void {
     let nameText = nameLabel.text ?? ""
@@ -238,26 +252,54 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
     }
     
     private func addDinnerItem() {
-        let dinnerItem = DinnerItems(context: coreDataStack.managedContext)
-        dinnerItem.added = NSDate()
-        dinnerItem.lastUpdate = NSDate()
-        let name = nameLabel.text ?? nil
-        dinnerItem.name = name
-        let notes = notesLabel.text ?? nil
-        dinnerItem.notes = notes
-        dinnerItem.image = dinnerItem.convertUIImageToNSData(from: image.image)
-        coreDataStack.saveContext()
-//        clearCaches()
+        if newItem {
+            // create new dinnerItemObject
+            let dinnerItem = DinnerItems(context: coreDataStack.managedContext)
+            dinnerItem.added = NSDate()
+            dinnerItem.lastUpdate = NSDate()
+            let name = nameLabel.text ?? nil
+            dinnerItem.name = name
+            let notes = notesLabel.text ?? nil
+            dinnerItem.notes = notes
+            if let image = image {
+                dinnerItem.image = dinnerItem.convertUIImageToNSData(from: image.image)
+            }
+            dinnerItem.category = categorySelected
+            
+            coreDataStack.saveContext()
+        } else {
+            // update existing dinnerItemDetail
+            if let dinnerItem = dinnerItemDetail {
+                dinnerItem.lastUpdate = NSDate()
+                let name = nameLabel.text ?? nil
+                dinnerItem.name = name
+                let notes = notesLabel.text ?? nil
+                dinnerItem.notes = notes
+                if let image = image {
+                    dinnerItem.image = dinnerItem.convertUIImageToNSData(from: image.image)
+                }
+                dinnerItem.category = categorySelected
+                
+                coreDataStack.saveContext()
+            }
         }
+
+        }
+    // update Category selection with animation
     private func updateCategorySelection(with image: UIImage?) {
         self.selectedCategoryImage.tintColor = UIColor.darkGray
         if let image = image {
             self.selectedCategoryImage.image = image
         }
+        animateCategoryMenuBar()
+    }
+    // animate the categoryMenuBar
+    private func animateCategoryMenuBar() {
         if self.wrapperViewZeroHeightConstraint == nil {
             self.wrapperViewZeroHeightConstraint = self.wrapperViewCategoryBar.heightAnchor.constraint(equalToConstant: 0)
         }
-        let shouldShow = !self.categoryBarEdgeContstraint.isActive
+        
+        let shouldShow = !categoryBarEdgeContstraint.isActive
         // Deactivate constraint first to avoid constraint conflict message
         if shouldShow {
             self.wrapperViewZeroHeightConstraint.isActive = false
@@ -266,7 +308,7 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
            self.categoryBarEdgeContstraint.isActive = false
             self.wrapperViewZeroHeightConstraint.isActive = true
         }
-        UIView.animate(withDuration: 0.50) {
+        UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
         }
     }
