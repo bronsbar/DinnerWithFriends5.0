@@ -13,6 +13,9 @@ import CoreData
 
 class DinnerItemDetailViewController: UIViewController {
     
+    
+    // MARK: -Properties
+    
     var newItem : Bool = false // is set true by when + is selected in the dinnerItemList
     var dinnerItemDetail : DinnerItems? // will be set when a dinnerItem is passed from the dinnerItem list
     
@@ -24,12 +27,8 @@ class DinnerItemDetailViewController: UIViewController {
             guard categorySelected != "" else {return}
             let image = UIImage(named: categorySelected)
             DispatchQueue.main.async {
-                self.selectedCategoryImage.tintColor = UIColor.darkGray
-                self.selectedCategoryImage.image = image
-                print("categoryimage changed")
-                
+                self.updateCategorySelection(with: image)
             }
-            
         }
     }
     
@@ -37,7 +36,15 @@ class DinnerItemDetailViewController: UIViewController {
     
     @IBOutlet weak var wrapperViewCategoryBar: UIView!
     
+    @IBOutlet weak var wrapperViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var categoryBarEdgeContstraint: NSLayoutConstraint!
+    var wrapperViewZeroHeightConstraint : NSLayoutConstraint!
+    
     @IBOutlet weak var categoryBarCollectionView: DinnerDetailCategoryCollectionView!
+    
+    
+    
     
     @IBOutlet weak var selectedCategoryImage: UIImageView!
     @IBOutlet weak var notesContainer: UIView! {
@@ -242,7 +249,27 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
         coreDataStack.saveContext()
 //        clearCaches()
         }
-    
+    private func updateCategorySelection(with image: UIImage?) {
+        self.selectedCategoryImage.tintColor = UIColor.darkGray
+        if let image = image {
+            self.selectedCategoryImage.image = image
+        }
+        if self.wrapperViewZeroHeightConstraint == nil {
+            self.wrapperViewZeroHeightConstraint = self.wrapperViewCategoryBar.heightAnchor.constraint(equalToConstant: 0)
+        }
+        let shouldShow = !self.categoryBarEdgeContstraint.isActive
+        // Deactivate constraint first to avoid constraint conflict message
+        if shouldShow {
+            self.wrapperViewZeroHeightConstraint.isActive = false
+            self.categoryBarEdgeContstraint.isActive = true
+        } else {
+           self.categoryBarEdgeContstraint.isActive = false
+            self.wrapperViewZeroHeightConstraint.isActive = true
+        }
+        UIView.animate(withDuration: 0.50) {
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 extension DinnerItemDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {

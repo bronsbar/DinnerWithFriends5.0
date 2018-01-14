@@ -394,6 +394,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="categoryBarCollectionView" destination="Kuw-Ds-SBo" id="O5D-O2-Pta"/>
+                        <outlet property="categoryBarEdgeContstraint" destination="YKY-Aw-lEc" id="OVA-T5-miQ"/>
                         <outlet property="image" destination="ImG-N1-lem" id="ik1-Ru-n4S"/>
                         <outlet property="imageContainer" destination="4rT-my-RyV" id="ofG-Zw-9aV"/>
                         <outlet property="nameLabel" destination="zG5-d9-WJ3" id="H3I-va-arl"/>
@@ -404,6 +405,7 @@
                         <outlet property="selectedCategoryImage" destination="LrA-rS-dqq" id="Vs0-HD-cva"/>
                         <outlet property="urlLabel" destination="s7a-JG-HAJ" id="MJJ-qY-a9p"/>
                         <outlet property="wrapperViewCategoryBar" destination="oPR-mD-QU2" id="iAH-Yh-Rf1"/>
+                        <outlet property="wrapperViewHeightConstraint" destination="3iS-hT-c2E" id="D6g-hu-atn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PzO-KZ-iJt" userLabel="First Responder" sceneMemberID="firstResponder"/>
