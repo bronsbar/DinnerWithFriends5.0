@@ -17,7 +17,29 @@ class DinnerItemDetailViewController: UIViewController {
     var dinnerItemDetail : DinnerItems? // will be set when a dinnerItem is passed from the dinnerItem list
     
     var coreDataStack : CoreDataStack!
-
+    
+    var categories = [ "dinnerItemIcon", "wineIcon", "dessertsIcon"]
+    var categorySelected : String = "" {
+        didSet {
+            guard categorySelected != "" else {return}
+            let image = UIImage(named: categorySelected)
+            DispatchQueue.main.async {
+                self.selectedCategoryImage.tintColor = UIColor.darkGray
+                self.selectedCategoryImage.image = image
+                print("categoryimage changed")
+                
+            }
+            
+        }
+    }
+    
+    // MARK: -Outlets
+    
+    @IBOutlet weak var wrapperViewCategoryBar: UIView!
+    
+    @IBOutlet weak var categoryBarCollectionView: DinnerDetailCategoryCollectionView!
+    
+    @IBOutlet weak var selectedCategoryImage: UIImageView!
     @IBOutlet weak var notesContainer: UIView! {
         didSet {
             notesContainer.layer.borderColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
@@ -28,6 +50,8 @@ class DinnerItemDetailViewController: UIViewController {
     }
     @IBOutlet weak var imageContainer: UIView!
     // add a dropshadow to the imageContainer
+    
+    
     override func viewDidLayoutSubviews() {
         super .viewDidLayoutSubviews()
         let shadowPath = UIBezierPath(rect: imageContainer.layer.bounds)
@@ -37,6 +61,7 @@ class DinnerItemDetailViewController: UIViewController {
         imageContainer.layer.shadowRadius = 3
         imageContainer.layer.shadowOffset = CGSize(width: 0.0, height: -3.0)
         imageContainer.layer.shadowPath = shadowPath.cgPath
+        
         
     }
     
@@ -107,7 +132,10 @@ class DinnerItemDetailViewController: UIViewController {
         if let receivedDinnerItem = dinnerItemDetail {
             updateFields(with: receivedDinnerItem)
         }
-        // Do any additional setup after loading the view.
+        
+        // set delegate and datasource for categoryBarCollectionview as an extension
+       categoryBarCollectionView.delegate = self
+        categoryBarCollectionView.dataSource = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -215,4 +243,23 @@ extension DinnerItemDetailViewController :SFSafariViewControllerDelegate, UIImag
 //        clearCaches()
         }
     
+}
+
+extension DinnerItemDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return categories.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categorySelectionCell", for: indexPath) as! MenuBarCollectionViewCell
+        if let image = UIImage(named: categories[indexPath.item]){
+            cell.categoryImage.image = image
+        }
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        categorySelected = categories[indexPath.item]
+}
 }

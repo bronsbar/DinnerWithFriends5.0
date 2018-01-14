@@ -11,15 +11,35 @@ import UIKit
 class MenuBarCollectionViewCell: UICollectionViewCell {
    @IBOutlet weak var menuBarImage : UIImageView!
     
+    @IBOutlet weak var categoryImage: UIImageView! {
+        didSet {
+            categoryImage.tintColor = UIColor.white
+        }
+    }
+    
     override var isHighlighted: Bool {
         didSet {
+            if let menuBarImage = menuBarImage {
+                menuBarImage.tintColor = isHighlighted ? UIColor.darkGray : UIColor.white
+            }
+            if let categoryImage = categoryImage {
+                categoryImage.tintColor = isHighlighted ? UIColor.darkGray : UIColor.white
+            }
             
-            menuBarImage.tintColor = isHighlighted ? UIColor.darkGray : UIColor.white
+            
+           
         }
     }
     override var isSelected: Bool {
         didSet {
-            menuBarImage.tintColor = isSelected ? UIColor.darkGray: UIColor.white
+            if let menuBarImage = menuBarImage {
+                 menuBarImage.tintColor = isSelected ? UIColor.darkGray: UIColor.white
+            }
+            if let categoryImage = categoryImage {
+                categoryImage.tintColor = isSelected ? UIColor.darkGray: UIColor.white
+            }
+           
+           
         }
     }
     
