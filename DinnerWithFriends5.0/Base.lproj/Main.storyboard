@@ -656,11 +656,11 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="backgroundImage" destination="b1O-8i-0I0" id="Qif-fT-Izv"/>
                         <outlet property="dinnerCollectionView" destination="LMU-7F-weW" id="0wV-M0-lC1"/>
                         <outlet property="dinnerItemCollectionTopConstraint" destination="yWP-en-g3F" id="Yx4-YQ-CEs"/>
                         <outlet property="dinnerItemsCollectionView" destination="xjr-eM-s9X" id="XC1-JS-Q40"/>
                         <outlet property="menuBarCollectionView" destination="E1M-dK-FVv" id="emc-9c-jiy"/>
-                        <outlet property="tafelKleed" destination="b1O-8i-0I0" id="Qif-fT-Izv"/>
                         <outlet property="wrapperViewDinnerItemCollection" destination="gKc-Zp-rZO" id="WrJ-j6-oDg"/>
                         <outlet property="wrapperViewHeightConstraint" destination="54W-iu-xws" id="F7G-95-awh"/>
                     </connections>

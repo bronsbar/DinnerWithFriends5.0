@@ -22,7 +22,7 @@ class DinnerCreatorViewController: UIViewController{
     
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     @IBOutlet weak var dinnerCollectionView: UICollectionView!
-    @IBOutlet weak var tafelKleed: UIImageView! 
+    @IBOutlet weak var backgroundImage: UIImageView! 
     
     // MARK: - Properties
     
