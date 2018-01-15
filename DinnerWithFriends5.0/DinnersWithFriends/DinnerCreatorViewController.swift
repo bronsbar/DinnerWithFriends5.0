@@ -14,18 +14,19 @@ class DinnerCreatorViewController: UIViewController{
     // MARK: - Outlets
     @IBOutlet weak var wrapperViewDinnerItemCollection: UIView!
     
-    @IBOutlet weak var wrapperViewHeightConstraint: NSLayoutConstraint!
+   var wrapperViewZeroHeightConstraint: NSLayoutConstraint!
  
-    @IBOutlet weak var dinnerItemCollectionTopConstraint: NSLayoutConstraint!
+    @IBOutlet var dinnerItemCollectionTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var menuBarCollectionView: CreateDinnerCollectionView!
     
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     @IBOutlet weak var dinnerCollectionView: UICollectionView!
-    @IBOutlet weak var tafelKleed: UIImageView! 
+    @IBOutlet weak var backgroundPicture: UIImageView! 
     
     // MARK: - Properties
     
+    var menuItems = ["friendsIcon", "dinnerItemIcon", "wineIcon", "dessertsIcon","searchIcon"]
     // coreDataStack initialized from AppDelegate
     var coreDataStack : CoreDataStack!
     // fetchedResultsController
@@ -62,8 +63,10 @@ class DinnerCreatorViewController: UIViewController{
         dinnerItemsCollectionView.dragInteractionEnabled = true
         
         // assign menubar delegate and datasource
-        menuBarCollectionView.delegate = menuBarCollectionView
-        menuBarCollectionView.dataSource = menuBarCollectionView
+        menuBarCollectionView.delegate = self
+        menuBarCollectionView.dataSource = self
+        
+        animateDinnerItemsCollectionView()
     
     
     }
@@ -88,7 +91,28 @@ class DinnerCreatorViewController: UIViewController{
         // Pass the selected object to the new view controller.
     }
     */
-
+    // MARK: -Helper functions
+    
+    // animate the dinnerItemsCollectionViewBar
+    
+    private func animateDinnerItemsCollectionView() {
+        if self.wrapperViewZeroHeightConstraint == nil {
+            self.wrapperViewZeroHeightConstraint = self.wrapperViewDinnerItemCollection.heightAnchor.constraint(equalToConstant: 0)
+        }
+        
+        let shouldShow = !dinnerItemCollectionTopConstraint.isActive
+        // Deactivate constraint first to avoid constraint conflict message
+        if shouldShow {
+            self.wrapperViewZeroHeightConstraint.isActive = false
+            self.dinnerItemCollectionTopConstraint.isActive = true
+        } else {
+            self.dinnerItemCollectionTopConstraint.isActive = false
+            self.wrapperViewZeroHeightConstraint.isActive = true
+        }
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 // MARK: -NSFetchedResultsControllerDelegate
@@ -143,6 +167,8 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
             }
         case dinnerCollectionView:
             numberOfItems = dinnerCreation.count
+        case menuBarCollectionView:
+            numberOfItems = menuItems.count
         default:
             numberOfItems = 0
         }
@@ -156,11 +182,18 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
             configureCell(cell: cell, at: indexPath)
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dinnerCollectionViewCell", for: indexPath) as! DinnerCollectionViewCell
-           let dinnerItem = dinnerCreation[indexPath.item]
-            let image = dinnerItem.image
-            cell.image.image = image
-            return cell
+            if collectionView == dinnerCollectionView {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dinnerCollectionViewCell", for: indexPath) as! DinnerCollectionViewCell
+                let dinnerItem = dinnerCreation[indexPath.item]
+                let image = dinnerItem.image
+                cell.image.image = image
+                return cell
+            } else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "menuCell", for: indexPath) as! MenuBarCollectionViewCell
+                cell.menuBarImage.image = UIImage(named: menuItems[indexPath.row])
+                return cell
+            }
+            
         }
     }
     
@@ -172,6 +205,14 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
             cell.image.image = image
         }
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == menuBarCollectionView {
+            animateDinnerItemsCollectionView()
+            backgroundPicture.alpha = 0.2
+            dinnerItemsCollectionView.reloadData()
+        }
     }
     
 }
@@ -226,6 +267,8 @@ extension DinnerCreatorViewController: UICollectionViewDragDelegate {
        return [dragItem]
     }
 }
+
+
 
 
 class DinnerCreation {

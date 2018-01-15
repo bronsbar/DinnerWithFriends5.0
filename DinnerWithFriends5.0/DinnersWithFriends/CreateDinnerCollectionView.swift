@@ -8,19 +8,9 @@
 
 import UIKit
 
-class CreateDinnerCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource{
+class CreateDinnerCollectionView: UICollectionView {
+
     
-    
-    var menuItems = ["friendsIcon", "dinnerItemIcon", "wineIcon", "dessertsIcon","searchIcon"]
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "menuCell", for: indexPath) as! MenuBarCollectionViewCell
-        cell.menuBarImage.image = UIImage(named: menuItems[indexPath.row])
-        return cell
     }
     
 
@@ -32,5 +22,4 @@ class CreateDinnerCollectionView: UICollectionView, UICollectionViewDelegate, UI
     }
     */
 
-}
 
