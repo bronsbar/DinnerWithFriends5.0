@@ -471,7 +471,7 @@
                                     <constraint firstAttribute="height" constant="83" id="54W-iu-xws"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stock-photo-group-of-friends-making-toast-around-table-at-dinner-party-165815270" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b1O-8i-0I0" userLabel="background Picture">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="friendsDinner1" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b1O-8i-0I0" userLabel="background Picture">
                                 <rect key="frame" x="0.0" y="197" width="375" height="421"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E1M-dK-FVv" customClass="CreateDinnerCollectionView" customModule="DinnerWithFriends5_0" customModuleProvider="target">
@@ -734,7 +734,7 @@
     </scenes>
     <resources>
         <image name="DinnerIcon-1" width="48" height="48"/>
-        <image name="stock-photo-group-of-friends-making-toast-around-table-at-dinner-party-165815270" width="750" height="550"/>
+        <image name="friendsDinner1" width="375" height="222"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Kpa-fG-EBw"/>

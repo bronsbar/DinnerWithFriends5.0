@@ -163,6 +163,7 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
             return cell
         }
     }
+    }
     
     func configureCell(cell:DinnerItemCollectionViewCell, at indexPath: IndexPath) {
         let dinnerItem = fetchedResultsController.object(at: indexPath)
