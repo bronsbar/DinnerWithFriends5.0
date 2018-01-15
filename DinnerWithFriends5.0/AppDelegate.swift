@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack(modelName: "Dinner With Friends")
     
-
+    var dinnerPictures :[UIImage] = []
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
       
@@ -54,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         configureCloudKit()
         // if Core Data is empty, import the dinnerItems from Cloudkit
         importCloudKitDataIfNeeded(toUpdate: viewController)
+        importCloudKitImages()
        
         
         return true
@@ -104,6 +105,23 @@ extension AppDelegate {
                 print (zones.zoneID.zoneName)
             }
         }
+    }
+    
+    private func importCloudKitImages() {
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "DinnerPicture", predicate: predicate)
+        let operation = CKQueryOperation(query: query)
+        operation.recordFetchedBlock = { record in
+             if let asset = record.object(forKey: "picuture") as? CKAsset,
+            let data = NSData(contentsOf: asset.fileURL),
+                let image = UIImage(data: data as Data) {
+                self.dinnerPictures.append(image)
+                print(self.dinnerPictures.count)
+            }
+           
+            }
+      
+        container.publicCloudDatabase.add(operation)
     }
     
     private func importCloudKitDataIfNeeded(toUpdate viewController: DinnerItemTableViewController) {

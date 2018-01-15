@@ -22,9 +22,11 @@ class DinnerCreatorViewController: UIViewController{
     
     @IBOutlet weak var dinnerItemsCollectionView: UICollectionView!
     @IBOutlet weak var dinnerCollectionView: UICollectionView!
-    @IBOutlet weak var backgroundPicture: UIImageView! 
+    @IBOutlet weak var backgroundPicture: UIImageView!
     
     // MARK: - Properties
+    
+    var delegate = UIApplication.shared.delegate as! AppDelegate
     
     var menuItems = ["friendsIcon", "dinnerItemIcon", "wineIcon", "dessertsIcon","searchIcon"]
     // coreDataStack initialized from AppDelegate
@@ -65,8 +67,10 @@ class DinnerCreatorViewController: UIViewController{
         // assign menubar delegate and datasource
         menuBarCollectionView.delegate = self
         menuBarCollectionView.dataSource = self
+     
         
-        animateDinnerItemsCollectionView()
+        
+        
     
     
     }
@@ -74,6 +78,8 @@ class DinnerCreatorViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        animateDinnerItemsCollectionView()
+        loadRandomBackgroundPicture()
         do {
             try fetchedResultsController.performFetch()
             
@@ -105,13 +111,21 @@ class DinnerCreatorViewController: UIViewController{
         if shouldShow {
             self.wrapperViewZeroHeightConstraint.isActive = false
             self.dinnerItemCollectionTopConstraint.isActive = true
+            backgroundPicture.alpha = 0.1
         } else {
             self.dinnerItemCollectionTopConstraint.isActive = false
             self.wrapperViewZeroHeightConstraint.isActive = true
+            backgroundPicture.alpha = 1.0
         }
         UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
         }
+    }
+   private func loadRandomBackgroundPicture() {
+    let maxNumber = delegate.dinnerPictures.count
+    let randomNumber = arc4random_uniform(UInt32(maxNumber))
+    backgroundPicture.image = delegate.dinnerPictures[Int(randomNumber)]
+    
     }
 }
 
@@ -210,7 +224,6 @@ extension DinnerCreatorViewController: UICollectionViewDataSource, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == menuBarCollectionView {
             animateDinnerItemsCollectionView()
-            backgroundPicture.alpha = 0.2
             dinnerItemsCollectionView.reloadData()
         }
     }
