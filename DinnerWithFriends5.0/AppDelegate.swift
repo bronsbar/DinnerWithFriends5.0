@@ -9,13 +9,19 @@
 import UIKit
 import CloudKit
 import CoreData
-
+import Foundation
 
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate{
 
     var window: UIWindow?
+    
+    var container: CKContainer = {
+       return CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
+    }()
+    
+
     lazy var coreDataStack = CoreDataStack(modelName: "Dinner With Friends")
     
     var dinnerPictures :[UIImage] = []
@@ -50,11 +56,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         viewController.coreDataStack = coreDataStack
         viewController2.coreDataStack = coreDataStack
         
-        
         configureCloudKit()
         // if Core Data is empty, import the dinnerItems from Cloudkit
         importCloudKitDataIfNeeded(toUpdate: viewController)
         importCloudKitImages()
+        checkBackgroundPicturesPresent()
+        SubscriptionForBackGroundPicture()
+        print(NSHomeDirectory())
        
         
         return true
@@ -88,9 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
 // MARK: - Helper Methods
 extension AppDelegate {
     
-    var container: CKContainer {
-        return CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
-    }
+
     
     private func configureCloudKit() {
         let container = CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
@@ -112,7 +118,7 @@ extension AppDelegate {
         let query = CKQuery(recordType: "DinnerPicture", predicate: predicate)
         let operation = CKQueryOperation(query: query)
         operation.recordFetchedBlock = { record in
-             if let asset = record.object(forKey: "picuture") as? CKAsset,
+             if let asset = record.object(forKey: "picture") as? CKAsset,
             let data = NSData(contentsOf: asset.fileURL),
                 let image = UIImage(data: data as Data) {
                 self.dinnerPictures.append(image)
@@ -174,9 +180,66 @@ extension AppDelegate {
             
         }
         
-        
         container.privateCloudDatabase.add(operation)
-            }
     }
+    private func checkBackgroundPicturesPresent() {
+        let fetchRequest : NSFetchRequest<BackgroundPictures> = BackgroundPictures.fetchRequest()
+        let count = try? coreDataStack.managedContext.count(for: fetchRequest)
+        if let backgroundPicturescount = count, backgroundPicturescount == 0 {
+            print( "there are no pictures present")
+        } else {
+            print("pictures present")
+        }
+    }
+    private func subscribeToChanges() {
+        
+    }
+    
+    private func SubscriptionForBackGroundPicture() {
+        // check if there is a UserDefault file and if so what is the value of the subscribedToPrivateChanges key
+        let userDefault = UserDefaults.standard
+        // if user default file does not exist, create it
+        if !userDefault.exists(key: "subscribedToPrivateChanges") {
+            userDefault.set(false, forKey: "createdCustomZone")
+            userDefault.set(false, forKey: "subscribedToPrivateChanges" )
+            userDefault.set(false, forKey: "subscribedToSharedChanges")
+            userDefault.set("", forKey: "privateDatabaseToken")
+            userDefault.set("", forKey: "sharedDatabaseToken")
+        }
+        if userDefault.exists(key: "subscribedToPrivateChanges") {
+            // if the subscription for BackgroundPictures key is false, create a subscription
+            let subscriptionBackgroundPictureKey = userDefault.bool(forKey: "subscribedToPrivateChanges")
+            if !subscriptionBackgroundPictureKey {
+                let subscription = CKDatabaseSubscription(subscriptionID: "backgroundPicturesChanges")
+                let notificationInfo = CKNotificationInfo()
+                notificationInfo.shouldSendContentAvailable = true
+                subscription.notificationInfo = notificationInfo
+                
+                let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+                operation.modifySubscriptionsCompletionBlock = { (subscription, name, error) in
+                    if error != nil { print ("error in saving subscription for backgroundpicture change: ", error)}
+                    else {
+                        // if the subscription is succesfull, set the key to true
+                        userDefault.set(true, forKey: "subscribedToPrivateChanges")
+                    }
+                }
+                operation.qualityOfService = .utility
+                container.privateCloudDatabase.add(operation)
+            }
+            
+        }
+        
+    }
+    
+}
+
+extension UserDefaults {
+    func exists(key: String) -> Bool {
+        return UserDefaults.standard.object(forKey: key) != nil
+    }
+    
+}
+
+
 
 

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="BackgroundPictures" representedClassName="BackgroundPictures" syncable="YES">
+        <attribute name="ckChangeTag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ckDatabase" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ckZone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="modified" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="picture" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="pictureName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordType" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="DinnerItems" representedClassName="DinnerItems" syncable="YES">
         <attribute name="added" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
@@ -30,5 +41,6 @@
     <elements>
         <element name="DinnerItems" positionX="-540" positionY="63" width="128" height="225"/>
         <element name="Dinners" positionX="-54" positionY="63" width="128" height="208"/>
+        <element name="BackgroundPictures" positionX="-317" positionY="-90" width="128" height="178"/>
     </elements>
 </model>
