@@ -5,6 +5,7 @@
         <attribute name="ckDatabase" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ckZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="metaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="modified" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="picture" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="pictureName" optional="YES" attributeType="String" syncable="YES"/>
@@ -16,6 +17,7 @@
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="metaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="privateUse" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -31,6 +33,7 @@
         <attribute name="friends" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="metaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -39,8 +42,8 @@
         <relationship name="dinneritems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DinnerItems" inverseName="dinners" inverseEntity="DinnerItems" syncable="YES"/>
     </entity>
     <elements>
-        <element name="DinnerItems" positionX="-540" positionY="63" width="128" height="225"/>
-        <element name="Dinners" positionX="-54" positionY="63" width="128" height="208"/>
-        <element name="BackgroundPictures" positionX="-317" positionY="-90" width="128" height="178"/>
+        <element name="BackgroundPictures" positionX="-317" positionY="-90" width="128" height="195"/>
+        <element name="DinnerItems" positionX="-540" positionY="63" width="128" height="240"/>
+        <element name="Dinners" positionX="-54" positionY="63" width="128" height="225"/>
     </elements>
 </model>

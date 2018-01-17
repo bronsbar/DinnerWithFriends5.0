@@ -278,12 +278,106 @@ extension AppDelegate {
         operation.qualityOfService = .utility
         return operation
     }
+    
+    func fetchChanges(in databaseScope: CKDatabaseScope, completion: @escaping () -> Void) {
+        switch databaseScope {
+        case .private:
+          fetchDatabaseChanges(database: container.privateCloudDatabase, databaseTokenKey: "private", completion: completion)
+        case .shared:
+            fetchDatabaseChanges(database: container.sharedCloudDatabase, databaseTokenKey: "shared", completion: completion)
+        case .public:
+            fatalError()
+        }
+    }
+    func fetchDatabaseChanges (database : CKDatabase, databaseTokenKey: String, completion: @escaping () -> Void) {
+        var changedZoneIDs : [CKRecordZoneID] = []
+        var changeToken : CKServerChangeToken?
+        let userDefault = UserDefaults.standard
+        
+        switch database {
+        case container.sharedCloudDatabase:
+            changeToken = userDefault.sharedDBserverChangeToken
+        case container.privateCloudDatabase:
+            changeToken = userDefault.privateDBserverChangeToken
+        case container.publicCloudDatabase:
+            fatalError()
+        default:
+            fatalError()
+        }
+       
+        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+        
+        operation.recordZoneWithIDChangedBlock = {
+            (zoneID) in
+            changedZoneIDs.append(zoneID)
+        }
+        
+        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+            // write this zone deletion to memory
+        }
+        
+        operation.changeTokenUpdatedBlock = { (token) in
+            // flush zone deletions for this database to disk
+            // write this new database change token to disk
+            switch database {
+            case self.container.sharedCloudDatabase:
+                userDefault.sharedDBserverChangeToken = token
+            case self.container.privateCloudDatabase:
+                userDefault.privateDBserverChangeToken = token
+            default:
+                fatalError()
+            }
+        }
+        }
 }
 
 
 extension UserDefaults {
     func exists(key: String) -> Bool {
         return UserDefaults.standard.object(forKey: key) != nil
+    }
+    public var privateDBserverChangeToken: CKServerChangeToken? {
+        get {
+            guard let data = self.value(forKey: "privateDatabaseToken") as? Data else {
+                return nil
+            }
+            
+            guard let token = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken else {
+                return nil
+            }
+            
+            return token
+        }
+        set {
+            if let token = newValue {
+                let data = NSKeyedArchiver.archivedData(withRootObject: token)
+                self.set(data, forKey: "privateDatabaseToken")
+            } else {
+                self.removeObject(forKey: "privateDatabaseToken")
+            }
+        }
+    }
+    
+    public var sharedDBserverChangeToken: CKServerChangeToken? {
+        get {
+            guard let data = self.value(forKey: "sharedDatabaseToken") as? Data else {
+                return nil
+            }
+            
+            guard let token = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken else {
+                return nil
+            }
+            
+            return token
+        }
+        set {
+            if let token = newValue {
+                let data = NSKeyedArchiver.archivedData(withRootObject: token)
+                self.set(data, forKey: "sharedDatabaseToken")
+            } else {
+                self.removeObject(forKey: "sharedDatabaseToken")
+            }
+        }
     }
     
 }

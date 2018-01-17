@@ -2,8 +2,8 @@
 //  DinnerItems+CoreDataProperties.swift
 //  DinnerWithFriends5.0
 //
-//  Created by Bart Bronselaer on 29/12/17.
-//  Copyright © 2017 Bart Bronselaer. All rights reserved.
+//  Created by Bart Bronselaer on 17/01/18.
+//  Copyright © 2018 Bart Bronselaer. All rights reserved.
 //
 //
 
@@ -18,6 +18,7 @@ extension DinnerItems {
     }
 
     @NSManaged public var added: NSDate?
+    @NSManaged public var category: String?
     @NSManaged public var image: NSData?
     @NSManaged public var lastUpdate: NSDate?
     @NSManaged public var name: String?
@@ -27,7 +28,7 @@ extension DinnerItems {
     @NSManaged public var recordID: UUID?
     @NSManaged public var recordName: String?
     @NSManaged public var url: URL?
-    @NSManaged public var category: String?
+    @NSManaged public var metaData: NSData?
     @NSManaged public var dinners: NSSet?
 
 }
