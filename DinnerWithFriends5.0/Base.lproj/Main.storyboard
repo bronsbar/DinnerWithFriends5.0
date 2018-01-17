@@ -632,12 +632,12 @@
                             <constraint firstItem="LMU-7F-weW" firstAttribute="height" secondItem="5Pf-aA-ZXa" secondAttribute="height" multiplier="0.4" id="Lvg-R6-yYT"/>
                             <constraint firstItem="b1O-8i-0I0" firstAttribute="leading" secondItem="5Pf-aA-ZXa" secondAttribute="trailing" constant="-375" id="PJg-Lp-meT"/>
                             <constraint firstItem="E1M-dK-FVv" firstAttribute="leading" secondItem="5Pf-aA-ZXa" secondAttribute="leading" id="QRA-GI-6NR"/>
-                            <constraint firstItem="xjr-eM-s9X" firstAttribute="height" secondItem="gKc-Zp-rZO" secondAttribute="height" id="Yp1-V4-pbo"/>
                             <constraint firstItem="gKc-Zp-rZO" firstAttribute="top" secondItem="E1M-dK-FVv" secondAttribute="bottom" id="ZIr-El-1Cq"/>
                             <constraint firstItem="gKc-Zp-rZO" firstAttribute="leading" secondItem="5Pf-aA-ZXa" secondAttribute="leading" id="Zuw-sq-sgY"/>
                             <constraint firstItem="gKc-Zp-rZO" firstAttribute="trailing" secondItem="5Pf-aA-ZXa" secondAttribute="trailing" id="acF-bD-BBO"/>
                             <constraint firstItem="b1O-8i-0I0" firstAttribute="trailing" secondItem="5Pf-aA-ZXa" secondAttribute="trailing" id="bki-JB-vnh"/>
                             <constraint firstItem="LMU-7F-weW" firstAttribute="width" secondItem="5Pf-aA-ZXa" secondAttribute="width" id="htJ-OT-ScQ"/>
+                            <constraint firstItem="xjr-eM-s9X" firstAttribute="bottom" secondItem="gKc-Zp-rZO" secondAttribute="bottom" id="jcW-nr-KtF"/>
                             <constraint firstItem="E1M-dK-FVv" firstAttribute="top" secondItem="5Pf-aA-ZXa" secondAttribute="top" id="m3T-Fl-BFr"/>
                             <constraint firstItem="b1O-8i-0I0" firstAttribute="bottom" secondItem="5Pf-aA-ZXa" secondAttribute="bottom" id="pJh-ck-5Cu"/>
                             <constraint firstItem="E1M-dK-FVv" firstAttribute="trailing" secondItem="5Pf-aA-ZXa" secondAttribute="trailing" id="qOV-WR-Ctb"/>

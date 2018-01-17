@@ -61,13 +61,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         importCloudKitDataIfNeeded(toUpdate: viewController)
         importCloudKitImages()
         checkBackgroundPicturesPresent()
-        SubscriptionForBackGroundPicture()
+        subscribeToChangeNotifications()
         print(NSHomeDirectory())
-       
+        
+        //register to recieve remote notifications
+        application.registerForRemoteNotifications()
         
         return true
     }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("received notification")
+        
+        let dict = userInfo as! [String : NSObject]
+        guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dict) as? CKDatabaseNotification else { return }
+    }
 
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("application did succesfully registered for remote notification")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("app did fail to register for remote notification error :\(error)")
+    }
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -96,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
 // MARK: - Helper Methods
 extension AppDelegate {
     
-
+    
     
     private func configureCloudKit() {
         let container = CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
@@ -118,15 +134,15 @@ extension AppDelegate {
         let query = CKQuery(recordType: "DinnerPicture", predicate: predicate)
         let operation = CKQueryOperation(query: query)
         operation.recordFetchedBlock = { record in
-             if let asset = record.object(forKey: "picture") as? CKAsset,
-            let data = NSData(contentsOf: asset.fileURL),
+            if let asset = record.object(forKey: "picture") as? CKAsset,
+                let data = NSData(contentsOf: asset.fileURL),
                 let image = UIImage(data: data as Data) {
                 self.dinnerPictures.append(image)
                 print(self.dinnerPictures.count)
             }
-           
-            }
-      
+            
+        }
+        
         container.publicCloudDatabase.add(operation)
     }
     
@@ -142,8 +158,8 @@ extension AppDelegate {
         }
         // When there are no dinnerItems
         importCloudKitData(toUpdate: viewController)
-        
     }
+    
     private func importCloudKitData(toUpdate viewController: DinnerItemTableViewController) {
         
         let predicate = NSPredicate(value: true)
@@ -153,10 +169,10 @@ extension AppDelegate {
             let entityDescription = NSEntityDescription.entity(forEntityName: "DinnerItems", in: self.coreDataStack.managedContext)
             if let entityDescription = entityDescription {
                 // create DinnerItems objects
-                    let dinnerItem = DinnerItems(from: record, context: self.coreDataStack.managedContext, description: entityDescription)
+                let dinnerItem = DinnerItems(from: record, context: self.coreDataStack.managedContext, description: entityDescription)
                 print(dinnerItem.name!)
-                }
-                
+            }
+            
         }
         operation.queryCompletionBlock = { cursor, error in
             if let error = error {
@@ -191,47 +207,79 @@ extension AppDelegate {
             print("pictures present")
         }
     }
-    private func subscribeToChanges() {
-        
-    }
     
-    private func SubscriptionForBackGroundPicture() {
-        // check if there is a UserDefault file and if so what is the value of the subscribedToPrivateChanges key
+    private func subscribeToChangeNotifications() {
+        // check if there is a Local UserDefault file and if so what is the value of the subscribedToPrivateChanges key
         let userDefault = UserDefaults.standard
         // if user default file does not exist, create it
         if !userDefault.exists(key: "subscribedToPrivateChanges") {
+            
             userDefault.set(false, forKey: "createdCustomZone")
             userDefault.set(false, forKey: "subscribedToPrivateChanges" )
             userDefault.set(false, forKey: "subscribedToSharedChanges")
             userDefault.set("", forKey: "privateDatabaseToken")
             userDefault.set("", forKey: "sharedDatabaseToken")
+            subscriptionToChanges()
         }
-        if userDefault.exists(key: "subscribedToPrivateChanges") {
-            // if the subscription for BackgroundPictures key is false, create a subscription
-            let subscriptionBackgroundPictureKey = userDefault.bool(forKey: "subscribedToPrivateChanges")
-            if !subscriptionBackgroundPictureKey {
-                let subscription = CKDatabaseSubscription(subscriptionID: "backgroundPicturesChanges")
-                let notificationInfo = CKNotificationInfo()
-                notificationInfo.shouldSendContentAvailable = true
-                subscription.notificationInfo = notificationInfo
-                
-                let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-                operation.modifySubscriptionsCompletionBlock = { (subscription, name, error) in
-                    if error != nil { print ("error in saving subscription for backgroundpicture change: ", error)}
-                    else {
-                        // if the subscription is succesfull, set the key to true
-                        userDefault.set(true, forKey: "subscribedToPrivateChanges")
-                    }
-                }
-                operation.qualityOfService = .utility
-                container.privateCloudDatabase.add(operation)
-            }
-            
+        else {
+            subscriptionToChanges()
         }
-        
     }
     
+    // subscribe to changes in the private and shared CKdatabase
+    func subscriptionToChanges() {
+        
+        let userDefault = UserDefaults.standard
+        let subscriptionToPrivateChanges = userDefault.bool(forKey: "subscribedToPrivateChanges")
+        if !subscriptionToPrivateChanges {
+            let createSubscriptionOperation = createDabtabaseSubscriptionOperation(subscriptionID: "private-changes")
+            
+            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+                if error == nil {
+                    print ("subcription to private-changes was succesfull")
+                    userDefault.set(true, forKey: "subscribedToPrivateChanges")
+                }
+                else {
+                    // custom error handling:
+                    print("subscription returned error: \(error!)")
+                }
+            }
+            self.container.privateCloudDatabase.add(createSubscriptionOperation)
+        }
+        
+        let subscriptionToSharedChanges = userDefault.bool(forKey: "subscribedToSharedChanges")
+        if !subscriptionToSharedChanges {
+            let createSubscriptionOperation = createDabtabaseSubscriptionOperation(subscriptionID: "shared-changes")
+            
+            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+                if error == nil {
+                    print ("subcription to shared-changes was succesfull")
+                    userDefault.set(true, forKey: "subscribedToSharedChanges")
+                }
+                else {
+                    // custom error handling:
+                    print("subscription returned error: \(error!)")
+                    
+                }
+            }
+            self.container.sharedCloudDatabase.add(createSubscriptionOperation)
+        }
+    }
+    // helper function to create a database subscription operation
+    func createDabtabaseSubscriptionOperation(subscriptionID: String)-> CKModifySubscriptionsOperation {
+        
+        let subscription = CKDatabaseSubscription.init(subscriptionID: subscriptionID)
+        let notificationInfo = CKNotificationInfo()
+        // send a silent notification
+        notificationInfo.shouldSendContentAvailable = true
+        subscription.notificationInfo = notificationInfo
+        
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+        operation.qualityOfService = .utility
+        return operation
+    }
 }
+
 
 extension UserDefaults {
     func exists(key: String) -> Bool {
