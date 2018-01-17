@@ -28,8 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
       
-        
-        
         // propagate the managedContext
         
         guard let tabBarController = window?.rootViewController as? UITabBarController else { print ("tabbarcontroller niet gevonden")
@@ -75,6 +73,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         
         let dict = userInfo as! [String : NSObject]
         guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dict) as? CKDatabaseNotification else { return }
+        fetchChanges(in: notification.databaseScope) {
+            completionHandler(.newData)
+        }
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -328,8 +329,38 @@ extension AppDelegate {
                 fatalError()
             }
         }
+        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
+            if let error = error {
+                print("Error during fetch share database changes operaton", error)
+                completion()
+                return
+            }
+            //flush zone deletions for this database to disk
+            // write this new database change token to memory
+            switch database {
+            case self.container.sharedCloudDatabase:
+                userDefault.sharedDBserverChangeToken = token
+            case self.container.privateCloudDatabase:
+                userDefault.privateDBserverChangeToken = token
+            default:
+                fatalError()
+            }
+            self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs, completion: {
+                //Flush in-memory database change token to disk
+                completion()
+            })
         }
+        operation.qualityOfService = .userInitiated
+        
+        database.add(operation)
+        
+        
+        }
+    func fetchZoneChanges(database:CKDatabase, databaseTokenKey:String, zoneIDs: [CKRecordZoneID], completion: @escaping () -> Void) {
+        
+    }
 }
+
 
 
 extension UserDefaults {
