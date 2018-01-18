@@ -359,6 +359,31 @@ extension AppDelegate {
     func fetchZoneChanges(database:CKDatabase, databaseTokenKey:String, zoneIDs: [CKRecordZoneID], completion: @escaping () -> Void) {
         
     }
+    
+    func convertMetadataFromCkRecord(from record: CKRecord)-> NSMutableData {
+        let data = NSMutableData()
+        let coder = NSKeyedArchiver.init(forWritingWith: data)
+        coder.requiresSecureCoding = true
+        record.encodeSystemFields(with: coder)
+        coder.finishEncoding()
+        
+        return data
+        
+    }
+    
+    func convertMetadataFromManagedObject(from data: NSMutableData) -> CKRecord? {
+        
+        let coder = NSKeyedUnarchiver(forReadingWith: data as Data)
+        coder.requiresSecureCoding = true
+        if let record = CKRecord(coder: coder){
+            coder.finishDecoding()
+            return record
+        } else {
+            coder.finishDecoding()
+            print ("error in decoding ManagedObject")
+            return nil
+        }
+    }
 }
 
 
