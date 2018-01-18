@@ -21,6 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
        return CKContainer(identifier: "iCloud.bart.bronselaer-me.com.DinnerWithFriends5-0")
     }()
     
+    lazy var operationQueue : OperationQueue = {
+        var queue = OperationQueue()
+        queue.name = "Operation Queue"
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    
 
     lazy var coreDataStack = CoreDataStack(modelName: "Dinner With Friends")
     
@@ -65,6 +72,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         //register to recieve remote notifications
         application.registerForRemoteNotifications()
         
+//        addSubscriptiontoPublicDatabase(recordType: "DinnerPicture")
+        let backgroundPictureDownloader = BackgroundPicturesDownloader(recordType: "DinnerPicture", container: container)
+        backgroundPictureDownloader.completionBlock = {
+            print("completionblock executed")
+        }
+        operationQueue.addOperation(backgroundPictureDownloader)
+        
         return true
     }
     
@@ -72,11 +86,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         print("received notification")
         
         let dict = userInfo as! [String : NSObject]
-        guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dict) as? CKDatabaseNotification else { return }
-        fetchChanges(in: notification.databaseScope) {
+        
+       let notification:CKNotification = CKNotification(fromRemoteNotificationDictionary: dict)
+        if let queryNotification : CKQueryNotification = notification  as? CKQueryNotification {
+            print("notification was querynotification")
             completionHandler(.newData)
         }
-    }
+        
+        guard let databaseNotification : CKDatabaseNotification = notification as? CKDatabaseNotification else {return}
+        
+        fetchChanges(in: databaseNotification.databaseScope) {
+            completionHandler(.newData)
+        }
+        
+        }
+    
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("application did succesfully registered for remote notification")
@@ -287,7 +311,9 @@ extension AppDelegate {
         case .shared:
             fetchDatabaseChanges(database: container.sharedCloudDatabase, databaseTokenKey: "shared", completion: completion)
         case .public:
-            fatalError()
+            
+            print ("notification received in publid database, need to fetch changes")
+            completion()
         }
     }
     func fetchDatabaseChanges (database : CKDatabase, databaseTokenKey: String, completion: @escaping () -> Void) {

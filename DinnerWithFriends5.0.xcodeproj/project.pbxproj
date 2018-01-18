@@ -24,6 +24,7 @@
 		C9AC2081200A583200A153DC /* MenuBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AC2080200A583200A153DC /* MenuBarCollectionViewCell.swift */; };
 		C9CC2C2220055FE500B4E5AD /* DinnerCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CC2C2120055FE500B4E5AD /* DinnerCreatorViewController.swift */; };
 		C9CC2C242005D6CD00B4E5AD /* DinnerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CC2C232005D6CD00B4E5AD /* DinnerCollectionViewCell.swift */; };
+		CC772950201116A000BDBD13 /* BackgroundPicturesDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC77294F201116A000BDBD13 /* BackgroundPicturesDownloader.swift */; };
 		CC947BC52005437200621FDB /* DinnerItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC947BC42005437200621FDB /* DinnerItemCollectionViewCell.swift */; };
 		CC987D082009F47500C9C427 /* CreateDinnerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC987D072009F47500C9C427 /* CreateDinnerCollectionView.swift */; };
 		CC987D0A200B25BB00C9C427 /* DinnerDetailCategoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC987D09200B25BB00C9C427 /* DinnerDetailCategoryCollectionView.swift */; };
@@ -54,6 +55,7 @@
 		C9AC2080200A583200A153DC /* MenuBarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarCollectionViewCell.swift; sourceTree = "<group>"; };
 		C9CC2C2120055FE500B4E5AD /* DinnerCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerCreatorViewController.swift; sourceTree = "<group>"; };
 		C9CC2C232005D6CD00B4E5AD /* DinnerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerCollectionViewCell.swift; sourceTree = "<group>"; };
+		CC77294F201116A000BDBD13 /* BackgroundPicturesDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundPicturesDownloader.swift; sourceTree = "<group>"; };
 		CC947BC42005437200621FDB /* DinnerItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC987D072009F47500C9C427 /* CreateDinnerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDinnerCollectionView.swift; sourceTree = "<group>"; };
 		CC987D09200B25BB00C9C427 /* DinnerDetailCategoryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerDetailCategoryCollectionView.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				C9483AD21FEA93FE003C0812 /* DinnerWithFriends5.0.entitlements */,
 				C9483AC01FEA93F4003C0812 /* AppDelegate.swift */,
+				CC77294F201116A000BDBD13 /* BackgroundPicturesDownloader.swift */,
 				C9483ADA1FEAB16A003C0812 /* Dinner.swift */,
 				C9483ADC1FEAB192003C0812 /* DinnerItem.swift */,
 				CC947BC62005438C00621FDB /* DinnersWithFriends */,
@@ -246,6 +249,7 @@
 				C9483AC11FEA93F4003C0812 /* AppDelegate.swift in Sources */,
 				C9CC2C242005D6CD00B4E5AD /* DinnerCollectionViewCell.swift in Sources */,
 				CC987D28200FB64200C9C427 /* Dinners+CoreDataProperties.swift in Sources */,
+				CC772950201116A000BDBD13 /* BackgroundPicturesDownloader.swift in Sources */,
 				C9483AD91FEAA229003C0812 /* DinnerItemTableViewCell.swift in Sources */,
 				C9483AD71FEA9CAE003C0812 /* DinnerItemTableViewController.swift in Sources */,
 				C9AC2081200A583200A153DC /* MenuBarCollectionViewCell.swift in Sources */,
