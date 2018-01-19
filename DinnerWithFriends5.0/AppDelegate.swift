@@ -66,18 +66,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         importCloudKitDataIfNeeded(toUpdate: viewController)
         importCloudKitImages()
         checkBackgroundPicturesPresent()
-        subscribeToChangeNotifications()
+//        subscribeToChangeNotifications()
         print(NSHomeDirectory())
         
         //register to recieve remote notifications
         application.registerForRemoteNotifications()
         
-//        addSubscriptiontoPublicDatabase(recordType: "DinnerPicture")
-        let backgroundPictureDownloader = BackgroundPicturesDownloader(recordType: "DinnerPicture", container: container)
-        backgroundPictureDownloader.completionBlock = {
-            print("completionblock executed")
-        }
-        operationQueue.addOperation(backgroundPictureDownloader)
+        let operationQueue = OperationQueue()
+        let initialisationOperation = InitialisationOperation(container: container, operationQueue: operationQueue)
+        operationQueue.addOperation(initialisationOperation)
+        initialisationOperation.completionBlock = { print("completion block initialisation triggered")}
         
         return true
     }
@@ -95,11 +93,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         
         guard let databaseNotification : CKDatabaseNotification = notification as? CKDatabaseNotification else {return}
         
-        fetchChanges(in: databaseNotification.databaseScope) {
-            completionHandler(.newData)
+//        fetchChanges(in: databaseNotification.databaseScope) {
+//            completionHandler(.newData)
         }
         
-        }
+        
     
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -233,236 +231,186 @@ extension AppDelegate {
         }
     }
     
-    private func subscribeToChangeNotifications() {
-        // check if there is a Local UserDefault file and if so what is the value of the subscribedToPrivateChanges key
-        let userDefault = UserDefaults.standard
-        // if user default file does not exist, create it
-        if !userDefault.exists(key: "subscribedToPrivateChanges") {
-            
-            userDefault.set(false, forKey: "createdCustomZone")
-            userDefault.set(false, forKey: "subscribedToPrivateChanges" )
-            userDefault.set(false, forKey: "subscribedToSharedChanges")
-            userDefault.set("", forKey: "privateDatabaseToken")
-            userDefault.set("", forKey: "sharedDatabaseToken")
-            subscriptionToChanges()
-        }
-        else {
-            subscriptionToChanges()
-        }
-    }
-    
-    // subscribe to changes in the private and shared CKdatabase
-    func subscriptionToChanges() {
-        
-        let userDefault = UserDefaults.standard
-        let subscriptionToPrivateChanges = userDefault.bool(forKey: "subscribedToPrivateChanges")
-        if !subscriptionToPrivateChanges {
-            let createSubscriptionOperation = createDabtabaseSubscriptionOperation(subscriptionID: "private-changes")
-            
-            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
-                if error == nil {
-                    print ("subcription to private-changes was succesfull")
-                    userDefault.set(true, forKey: "subscribedToPrivateChanges")
-                }
-                else {
-                    // custom error handling:
-                    print("subscription returned error: \(error!)")
-                }
-            }
-            self.container.privateCloudDatabase.add(createSubscriptionOperation)
-        }
-        
-        let subscriptionToSharedChanges = userDefault.bool(forKey: "subscribedToSharedChanges")
-        if !subscriptionToSharedChanges {
-            let createSubscriptionOperation = createDabtabaseSubscriptionOperation(subscriptionID: "shared-changes")
-            
-            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
-                if error == nil {
-                    print ("subcription to shared-changes was succesfull")
-                    userDefault.set(true, forKey: "subscribedToSharedChanges")
-                }
-                else {
-                    // custom error handling:
-                    print("subscription returned error: \(error!)")
-                    
-                }
-            }
-            self.container.sharedCloudDatabase.add(createSubscriptionOperation)
-        }
-    }
-    // helper function to create a database subscription operation
-    func createDabtabaseSubscriptionOperation(subscriptionID: String)-> CKModifySubscriptionsOperation {
-        
-        let subscription = CKDatabaseSubscription.init(subscriptionID: subscriptionID)
-        let notificationInfo = CKNotificationInfo()
-        // send a silent notification
-        notificationInfo.shouldSendContentAvailable = true
-        subscription.notificationInfo = notificationInfo
-        
-        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-        operation.qualityOfService = .utility
-        return operation
-    }
-    
-    func fetchChanges(in databaseScope: CKDatabaseScope, completion: @escaping () -> Void) {
-        switch databaseScope {
-        case .private:
-          fetchDatabaseChanges(database: container.privateCloudDatabase, databaseTokenKey: "private", completion: completion)
-        case .shared:
-            fetchDatabaseChanges(database: container.sharedCloudDatabase, databaseTokenKey: "shared", completion: completion)
-        case .public:
-            
-            print ("notification received in publid database, need to fetch changes")
-            completion()
-        }
-    }
-    func fetchDatabaseChanges (database : CKDatabase, databaseTokenKey: String, completion: @escaping () -> Void) {
-        var changedZoneIDs : [CKRecordZoneID] = []
-        var changeToken : CKServerChangeToken?
-        let userDefault = UserDefaults.standard
-        
-        switch database {
-        case container.sharedCloudDatabase:
-            changeToken = userDefault.sharedDBserverChangeToken
-        case container.privateCloudDatabase:
-            changeToken = userDefault.privateDBserverChangeToken
-        case container.publicCloudDatabase:
-            fatalError()
-        default:
-            fatalError()
-        }
-       
-        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
-        
-        operation.recordZoneWithIDChangedBlock = {
-            (zoneID) in
-            changedZoneIDs.append(zoneID)
-        }
-        
-        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
-            // write this zone deletion to memory
-        }
-        
-        operation.changeTokenUpdatedBlock = { (token) in
-            // flush zone deletions for this database to disk
-            // write this new database change token to disk
-            switch database {
-            case self.container.sharedCloudDatabase:
-                userDefault.sharedDBserverChangeToken = token
-            case self.container.privateCloudDatabase:
-                userDefault.privateDBserverChangeToken = token
-            default:
-                fatalError()
-            }
-        }
-        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
-            if let error = error {
-                print("Error during fetch share database changes operaton", error)
-                completion()
-                return
-            }
-            //flush zone deletions for this database to disk
-            // write this new database change token to memory
-            switch database {
-            case self.container.sharedCloudDatabase:
-                userDefault.sharedDBserverChangeToken = token
-            case self.container.privateCloudDatabase:
-                userDefault.privateDBserverChangeToken = token
-            default:
-                fatalError()
-            }
-            self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs, completion: {
-                //Flush in-memory database change token to disk
-                completion()
-            })
-        }
-        operation.qualityOfService = .userInitiated
-        
-        database.add(operation)
-        
-        
-        }
-    func fetchZoneChanges(database:CKDatabase, databaseTokenKey:String, zoneIDs: [CKRecordZoneID], completion: @escaping () -> Void) {
-        
-    }
-    
-    func convertMetadataFromCkRecord(from record: CKRecord)-> NSMutableData {
-        let data = NSMutableData()
-        let coder = NSKeyedArchiver.init(forWritingWith: data)
-        coder.requiresSecureCoding = true
-        record.encodeSystemFields(with: coder)
-        coder.finishEncoding()
-        
-        return data
-        
-    }
-    
-    func convertMetadataFromManagedObject(from data: NSMutableData) -> CKRecord? {
-        
-        let coder = NSKeyedUnarchiver(forReadingWith: data as Data)
-        coder.requiresSecureCoding = true
-        if let record = CKRecord(coder: coder){
-            coder.finishDecoding()
-            return record
-        } else {
-            coder.finishDecoding()
-            print ("error in decoding ManagedObject")
-            return nil
-        }
-    }
+//    private func subscribeToChangeNotifications() {
+//        // check if there is a Local UserDefault file and if so what is the value of the subscribedToPrivateChanges key
+//        let userDefault = UserDefaults.standard
+//        // if user default file does not exist, create it
+//        if !userDefault.exists(key: "subscribedToPrivateChanges") {
+//
+//            userDefault.set(false, forKey: "createdCustomZone")
+//            userDefault.set(false, forKey: "subscribedToPrivateChanges" )
+//            userDefault.set(false, forKey: "subscribedToSharedChanges")
+//            userDefault.set("", forKey: "privateDatabaseToken")
+//            userDefault.set("", forKey: "sharedDatabaseToken")
+//            subscriptionToChanges()
+//        }
+//        else {
+//            subscriptionToChanges()
+//        }
+//    }
+//
+//    // subscribe to changes in the private and shared CKdatabase
+//    func subscriptionToChanges() {
+//
+//        let userDefault = UserDefaults.standard
+//        let subscriptionToPrivateChanges = userDefault.bool(forKey: "subscribedToPrivateChanges")
+//        if !subscriptionToPrivateChanges {
+//            let createSubscriptionOperation = createDabtabaseSubscriptionOperation(subscriptionID: "private-changes")
+//
+//            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+//                if error == nil {
+//                    print ("subcription to private-changes was succesfull")
+//                    userDefault.set(true, forKey: "subscribedToPrivateChanges")
+//                }
+//                else {
+//                    // custom error handling:
+//                    print("subscription returned error: \(error!)")
+//                }
+//            }
+//            self.container.privateCloudDatabase.add(createSubscriptionOperation)
+//        }
+//
+//        let subscriptionToSharedChanges = userDefault.bool(forKey: "subscribedToSharedChanges")
+//        if !subscriptionToSharedChanges {
+//            let createSubscriptionOperation = createDabtabaseSubscriptionOperation(subscriptionID: "shared-changes")
+//
+//            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+//                if error == nil {
+//                    print ("subcription to shared-changes was succesfull")
+//                    userDefault.set(true, forKey: "subscribedToSharedChanges")
+//                }
+//                else {
+//                    // custom error handling:
+//                    print("subscription returned error: \(error!)")
+//
+//                }
+//            }
+//            self.container.sharedCloudDatabase.add(createSubscriptionOperation)
+//        }
+//    }
+//    // helper function to create a database subscription operation
+//    func createDabtabaseSubscriptionOperation(subscriptionID: String)-> CKModifySubscriptionsOperation {
+//
+//        let subscription = CKDatabaseSubscription.init(subscriptionID: subscriptionID)
+//        let notificationInfo = CKNotificationInfo()
+//        // send a silent notification
+//        notificationInfo.shouldSendContentAvailable = true
+//        subscription.notificationInfo = notificationInfo
+//
+//        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+//        operation.qualityOfService = .utility
+//        return operation
+//    }
+//
+//    func fetchChanges(in databaseScope: CKDatabaseScope, completion: @escaping () -> Void) {
+//        switch databaseScope {
+//        case .private:
+//          fetchDatabaseChanges(database: container.privateCloudDatabase, databaseTokenKey: "private", completion: completion)
+//        case .shared:
+//            fetchDatabaseChanges(database: container.sharedCloudDatabase, databaseTokenKey: "shared", completion: completion)
+//        case .public:
+//
+//            print ("notification received in publid database, need to fetch changes")
+//            completion()
+//        }
+//    }
+//    func fetchDatabaseChanges (database : CKDatabase, databaseTokenKey: String, completion: @escaping () -> Void) {
+//        var changedZoneIDs : [CKRecordZoneID] = []
+//        var changeToken : CKServerChangeToken?
+//        let userDefault = UserDefaults.standard
+//
+//        switch database {
+//        case container.sharedCloudDatabase:
+//            changeToken = userDefault.sharedDBserverChangeToken
+//        case container.privateCloudDatabase:
+//            changeToken = userDefault.privateDBserverChangeToken
+//        case container.publicCloudDatabase:
+//            fatalError()
+//        default:
+//            fatalError()
+//        }
+//
+//        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+//
+//        operation.recordZoneWithIDChangedBlock = {
+//            (zoneID) in
+//            changedZoneIDs.append(zoneID)
+//        }
+//
+//        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+//            // write this zone deletion to memory
+//        }
+//
+//        operation.changeTokenUpdatedBlock = { (token) in
+//            // flush zone deletions for this database to disk
+//            // write this new database change token to disk
+//            switch database {
+//            case self.container.sharedCloudDatabase:
+//                userDefault.sharedDBserverChangeToken = token
+//            case self.container.privateCloudDatabase:
+//                userDefault.privateDBserverChangeToken = token
+//            default:
+//                fatalError()
+//            }
+//        }
+//        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
+//            if let error = error {
+//                print("Error during fetch share database changes operaton", error)
+//                completion()
+//                return
+//            }
+//            //flush zone deletions for this database to disk
+//            // write this new database change token to memory
+//            switch database {
+//            case self.container.sharedCloudDatabase:
+//                userDefault.sharedDBserverChangeToken = token
+//            case self.container.privateCloudDatabase:
+//                userDefault.privateDBserverChangeToken = token
+//            default:
+//                fatalError()
+//            }
+//            self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs, completion: {
+//                //Flush in-memory database change token to disk
+//                completion()
+//            })
+//        }
+//        operation.qualityOfService = .userInitiated
+//
+//        database.add(operation)
+//
+//
+//        }
+//    func fetchZoneChanges(database:CKDatabase, databaseTokenKey:String, zoneIDs: [CKRecordZoneID], completion: @escaping () -> Void) {
+//
+//    }
+//
+//    func convertMetadataFromCkRecord(from record: CKRecord)-> NSMutableData {
+//        let data = NSMutableData()
+//        let coder = NSKeyedArchiver.init(forWritingWith: data)
+//        coder.requiresSecureCoding = true
+//        record.encodeSystemFields(with: coder)
+//        coder.finishEncoding()
+//
+//        return data
+//
+//    }
+//
+//    func convertMetadataFromManagedObject(from data: NSMutableData) -> CKRecord? {
+//
+//        let coder = NSKeyedUnarchiver(forReadingWith: data as Data)
+//        coder.requiresSecureCoding = true
+//        if let record = CKRecord(coder: coder){
+//            coder.finishDecoding()
+//            return record
+//        } else {
+//            coder.finishDecoding()
+//            print ("error in decoding ManagedObject")
+//            return nil
+//        }
+//    }
 }
 
 
-
-extension UserDefaults {
-    func exists(key: String) -> Bool {
-        return UserDefaults.standard.object(forKey: key) != nil
-    }
-    public var privateDBserverChangeToken: CKServerChangeToken? {
-        get {
-            guard let data = self.value(forKey: "privateDatabaseToken") as? Data else {
-                return nil
-            }
-            
-            guard let token = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken else {
-                return nil
-            }
-            
-            return token
-        }
-        set {
-            if let token = newValue {
-                let data = NSKeyedArchiver.archivedData(withRootObject: token)
-                self.set(data, forKey: "privateDatabaseToken")
-            } else {
-                self.removeObject(forKey: "privateDatabaseToken")
-            }
-        }
-    }
-    
-    public var sharedDBserverChangeToken: CKServerChangeToken? {
-        get {
-            guard let data = self.value(forKey: "sharedDatabaseToken") as? Data else {
-                return nil
-            }
-            
-            guard let token = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken else {
-                return nil
-            }
-            
-            return token
-        }
-        set {
-            if let token = newValue {
-                let data = NSKeyedArchiver.archivedData(withRootObject: token)
-                self.set(data, forKey: "sharedDatabaseToken")
-            } else {
-                self.removeObject(forKey: "sharedDatabaseToken")
-            }
-        }
-    }
-    
-}
 
 
 
